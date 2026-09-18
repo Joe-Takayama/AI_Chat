@@ -50,24 +50,6 @@
 
             {% endif %}
 
-            <!-- 各フィールドのエラー -->
-            {% for field in form %}
-
-                {% if field.errors %}
-                    <div class='form-error'>
-                        {{ field.errors }}
-                    </div>
-                {% endif %}
-
-                <div class='form-field'>
-
-                    {{ field.label_tag }}
-
-                    {{ field }}
-
-                </div>
-
-            {% endfor %}
 
             <!-- メールアドレス -->
             <div class='form-group'>

@@ -64,6 +64,7 @@ class LoginForm(forms.Form):
     email = forms.EmailField(
         label='メールアドレス',
         widget=forms.EmailInput(attrs={
+            'class': 'auth-input',
             'placeholder': '例: example@gmail.com'
         }),
     )
@@ -71,6 +72,7 @@ class LoginForm(forms.Form):
     password = forms.CharField(
         label='パスワード',
         widget=forms.PasswordInput(attrs={
-            'placeholder': 'パスワードを入力してください'
+            'class': 'auth-input',
+            'placeholder': ''
         }),
     )

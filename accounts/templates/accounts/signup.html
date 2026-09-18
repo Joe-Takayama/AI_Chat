@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block css %}
-    <link rel='stylesheet' href="{% static 'css/signup.css' %}" />
+    <link rel='stylesheet' href="{% static 'css/accounts.css' %}" />
 {% endblock %}
 
 {% block header %}
@@ -115,11 +115,40 @@
                     </div>
 
                 {% endif %}
-                
+
             </div>
+
+            <!-- パスワード確認 -->
+            <div class='form-group'>
+
+                <label for='{{ form.password2.id_for_label }}' class='form-label'>
+                    {{ form.password2.label }}
+                </label>
+
+                {{ form.password2 }}
+
+                {% if form.password2.errors %}
+                
+                    <div class='field-error'>
+                        {{ form.password2.errors }}
+                    </div>
+
+                {% endif %}
+            
+            </div>
+
+            <!-- 新規登録ボタン -->
             <button type='submit' class='auth-button'>
-                アカウント登録
+                新規登録
             </button>
+
         </form>
+
+        <div class='auth-links'>
+
+            <a href="{% url 'accounts:login' %}">
+                既にアカウントをお持ちの方→
+            </a>
+        </div>
     </section>
 {% endblock %}

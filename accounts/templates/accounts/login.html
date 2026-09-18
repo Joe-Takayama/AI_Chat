@@ -1,0 +1,132 @@
+{% extends "base2/base2.html" %}
+{% load static %}
+
+{% block title %}
+ログイン | ChatBoy
+{% endblock %}
+
+{% block css %}
+    <link rel='stylesheet' href="{% static 'css/accounts.css' %}" />
+{% endblock %}
+
+{% block header %}
+
+    <header class='auth-header'>
+
+        <a href="{% url 'AIapp:index' %}" class='header-side-button' aria-label='TOPへ戻る'>
+            ←
+        </a>
+
+        <a href="{% url 'AIapp:index'%}" class='header-logo'>
+            ChatBoy
+        </a>
+
+        <a href="{% url 'accounts:signup' %}" class='header-side-button' aria-label='新規登録'>
+            👤
+        </a>
+
+    </header>
+
+{% endblock %}
+
+{% block content %}
+
+    <section class='auth-page'>
+
+        <h1 class='auth-title'>
+            ログイン
+        </h1>
+
+        <form method='post' class='auth-form'>
+
+            {% csrf_token %}
+
+            <!-- form全体のエラー -->
+            {% if form.non_field_errors %}
+
+                <div class='form-error'>
+                    {{ form.non_field_errors }}
+                </div>
+
+            {% endif %}
+
+            <!-- 各フィールドのエラー -->
+            {% for field in form %}
+
+                {% if field.errors %}
+                    <div class='form-error'>
+                        {{ field.errors }}
+                    </div>
+                {% endif %}
+
+                <div class='form-field'>
+
+                    {{ field.label_tag }}
+
+                    {{ field }}
+
+                </div>
+
+            {% endfor %}
+
+            <!-- メールアドレス -->
+            <div class='form-group'>
+
+                <label for="{{ form.email.id_for_label }}" class='form-label'>
+                    {{ form.email.label }}
+                </label>
+
+                {{ form.email }}
+
+                {% if form.email.errors %}
+
+                    <div class='field-error'>
+                        {{ form.email.errors }}
+                    </div>
+                
+                {% endif %}
+
+            </div>
+
+            <!-- パスワード -->
+            <div class='form-group'>
+
+                <label for='{{ form.password.id_for_label }}' class='form-label'>
+                    {{ form.password.label }}
+                </label>
+
+                {{ form.password }}
+
+                {% if form.password.errors %}
+
+                    <div class='field-error'>
+                        {{ form.password.errors }}
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+            <!-- ログインボタン -->
+            <button type='submit' class='auth-button'>
+                ログイン
+            </button>
+
+        </form>
+
+        <div class='auth-links'>
+
+            <!--パスワードリセット実装後にhrefを変更する -->
+            <a href='#'>
+                パスワードを忘れた方→
+            </a>
+
+            <a href="{% url 'accounts:signup' %}">
+                アカウントをお持ちでない方はこちら
+            </a>
+
+        </div>
+
+    </section>
+
+{% endblock %}

@@ -1,0 +1,125 @@
+{% extends 'base2/base2.html' %}
+{% load static %}
+
+{% block title %}
+    アカウント新規登録 | ChatBoy
+{% endblock %}
+
+{% block css %}
+    <link rel='stylesheet' href="{% static 'css/signup.css' %}" />
+{% endblock %}
+
+{% block header %}
+    <header class="auth-header">
+        <a href="{% url 'AIapp:index' %}" class='header-side-button' aria-label='ホーム'>
+            ←
+        </a>
+
+        <div class='header-logo'>
+            ChatBoy
+        </div>
+
+        <a href="{% url 'accounts:login' %}" class='header-side-button' aria-label='ログイン'>
+            ⇥
+        </a>
+    </header>
+{% endblock %}
+
+{% block content %}
+    <section class='auth-page'>
+
+        <h1 class='auth-title'>
+            アカウント登録
+        </h1>
+
+        <form method='post' class='auth-form'>
+            {% csrf_token %}
+
+            <!-- form全体のエラー -->
+            {% if form.non_field_errors %}
+
+                <div class='form-error'>
+
+                    {% for error in form.non_field_errors %}
+                        {{ error }}
+                    {% endfor %}
+
+                </div>
+            {% endif %}
+
+            <!-- 各フィールドのエラー -->
+            {% for field in form %}
+            
+                {% if field.errors %}
+                    <div class='form-error'>
+
+                        {% for error in field.errors %}
+                            {{ error }}
+                        {% endfor %}
+
+                    </div>
+                {% endif %}
+
+            {% endfor %}
+            
+            <!-- ユーザー名 -->
+            <div class='form_group'>
+
+                <label for='{{ form.username.id_for_label }}' class='form-label'>
+                    {{ form.username.label }}
+                </label>
+
+                {{ form.username }}
+
+                {% if form.username.errors %}
+
+                    <div class='field-error'>
+                        {{ form.username.errors }}
+                    </div>
+                {% endif %}
+                
+            </div>
+
+            <!-- メールアドレス -->
+            <div class='form-group'>
+
+                <label for='{{ form.email.id_for_label }}' class='form-label'>
+                    {{ form.email.label }}
+                </label>
+
+                {{ form.email }}
+
+                {% if form.email.errors %}
+
+                    <div class='field-error'>
+                        {{ form.email.errors }}
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+            <!-- パスワード -->
+            <div class='form-group'>
+
+                <label for='{{ form.password1.id_for_label }}' class='form-label'>
+                    {{ form.password1.label }}
+                </label>
+
+                {{ form.password1 }}
+
+                {% if form.password1.errors %}
+
+                    <div class='field-error'>
+                        {{ form.password1.errors }}
+                    </div>
+
+                {% endif %}
+                
+            </div>
+            <button type='submit' class='auth-button'>
+                アカウント登録
+            </button>
+        </form>
+    </section>
+{% endblock %}

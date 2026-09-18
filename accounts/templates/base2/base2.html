@@ -1,0 +1,38 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ja">
+
+    <head>
+        <meta charset='UTF-8'>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <title>
+            {% block title %}
+                ChatBoy
+            {% endblock %}
+        </title>
+
+        <link rel='stylesheet' href="{% static 'css/base2.css' %}" />
+
+        {% block css %}
+        {% endblock %}
+    </head>
+
+    <body>
+
+        <!-- ページごとにヘッダーを変更 -->
+        {% block header %}
+        {% endblock %}
+
+        <!-- ページごとにコンテンツを変更 -->
+        {% block content %}
+        {% endblock %}
+
+        <!-- フッターは前頁共通 -->
+        <footer class="footer">
+            &copy; 2026 ChatBoy
+        </footer>
+
+    </body>
+</html>

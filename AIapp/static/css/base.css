@@ -1,10 +1,11 @@
-/* ==============================
-   共通設定
-============================== */
+/* ========================================
+   全体
+======================================== */
 
 * {
     box-sizing: border-box;
 }
+
 
 html,
 body {
@@ -15,8 +16,12 @@ body {
     min-height: 100%;
 }
 
+
 body {
     min-height: 100dvh;
+
+    display: flex;
+    flex-direction: column;
 
     font-family:
         Arial,
@@ -25,39 +30,301 @@ body {
 
     color: #111111;
 
-    background-color: #eef1f5;
+    background-color: #f7f8fa;
 }
 
 
-/* ==============================
-   ページ全体
-============================== */
 
-.page-shell {
+/* ========================================
+   ヘッダー
+======================================== */
+
+.top-header {
     width: 100%;
-    min-height: 100dvh;
+    height: 116px;
+
+    flex-shrink: 0;
+
+    display: grid;
+
+    grid-template-columns:
+        50px
+        1fr
+        90px;
+
+    align-items: center;
+
+    padding:
+        0
+        16px;
+
+    background-color: #d9d9d9;
+
+    border-bottom:
+        1px
+        solid
+        #555555;
+}
+
+
+
+/* ========================================
+   ハンバーガーメニュー
+======================================== */
+
+.menu-button {
+    width: 36px;
+    height: 36px;
 
     display: flex;
-    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    padding: 0;
+
+    border: none;
+
+    background: transparent;
+
+    color: #111111;
+
+    font-size: 23px;
+
+    cursor: pointer;
+}
+
+
+
+/* ========================================
+   ChatBoyロゴ
+======================================== */
+
+.top-logo {
+    justify-self: start;
+
+    color: #111111;
+
+    text-decoration: none;
+
+    font-size: 20px;
+
+    font-weight: 400;
+}
+
+
+
+/* ========================================
+   ヘッダー右側
+======================================== */
+
+.header-right {
+    display: flex;
+
+    justify-content: flex-end;
+    align-items: center;
+
+    gap: 15px;
+}
+
+
+
+/* ログインアイコン */
+
+.header-login-icon {
+    width: 30px;
+    height: 30px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    color: #111111;
+
+    text-decoration: none;
+
+    font-size: 21px;
+}
+
+
+
+/* ユーザーアイコン */
+
+.header-user-icon {
+    width: 30px;
+    height: 30px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    color: #111111;
+
+    text-decoration: none;
+
+    font-size: 21px;
+}
+
+
+
+/* ========================================
+   メイン
+======================================== */
+
+.main-content {
+    width: 100%;
+
+    flex: 1;
+
+    display: flex;
 
     background-color: #f7f8fa;
 }
 
 
-/* ==============================
-   メイン部分
-============================== */
 
-.page-main {
+/* ========================================
+   TOP画面
+======================================== */
+
+.chat-top {
     width: 100%;
 
     flex: 1;
+
+    display: flex;
+
+    flex-direction: column;
 }
 
 
-/* ==============================
+
+/* ========================================
+   ようこそ表示
+======================================== */
+
+.welcome-area {
+    width: 100%;
+
+    margin-top: 120px;
+
+    text-align: center;
+}
+
+
+.welcome-title {
+    margin:
+        0
+        0
+        28px;
+
+    font-size: 18px;
+
+    font-weight: 400;
+}
+
+
+.welcome-text {
+    margin: 0;
+
+    font-size: 18px;
+
+    font-weight: 400;
+}
+
+
+
+/* ========================================
+   メッセージ入力フォーム
+======================================== */
+
+.message-form {
+    width: calc(100% - 28px);
+
+    height: 46px;
+
+    margin:
+        auto
+        14px
+        14px;
+
+    display: flex;
+
+    align-items: center;
+
+    background-color: #ffffff;
+
+    border:
+        1px
+        solid
+        #555555;
+}
+
+
+
+/* メッセージ入力欄 */
+
+.message-input {
+    min-width: 0;
+
+    flex: 1;
+
+    height: 100%;
+
+    padding:
+        0
+        12px;
+
+    border: none;
+
+    background-color: transparent;
+
+    color: #111111;
+
+    font-size: 14px;
+
+    outline: none;
+}
+
+
+.message-input::placeholder {
+    color: #aaaaaa;
+}
+
+
+
+/* ========================================
+   送信ボタン
+======================================== */
+
+.send-button {
+    width: 45px;
+    height: 100%;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    padding: 0;
+
+    border: none;
+
+    background-color: transparent;
+
+    color: #111111;
+
+    font-size: 21px;
+
+    cursor: pointer;
+}
+
+
+
+/* ========================================
    フッター
-============================== */
+======================================== */
 
 .footer {
     width: 100%;
@@ -66,31 +333,128 @@ body {
     flex-shrink: 0;
 
     display: flex;
-    align-items: center;
+
     justify-content: center;
+    align-items: center;
 
     background-color: #d9d9d9;
 
-    border-top: 1px solid #333333;
+    border-top:
+        1px
+        solid
+        #555555;
 
-    font-size: 16px;
+    font-size: 14px;
 }
 
 
-/* ==============================
-   PC表示
-   Figmaのスマホ幅に近づける
-============================== */
+
+/* ========================================
+   小さいスマホ
+======================================== */
+
+@media (max-width: 390px) {
+
+    .top-header {
+        height: 100px;
+
+        grid-template-columns:
+            45px
+            1fr
+            85px;
+
+        padding:
+            0
+            14px;
+    }
+
+
+    .menu-button {
+        font-size: 21px;
+    }
+
+
+    .top-logo {
+        font-size: 18px;
+    }
+
+
+    .header-right {
+        gap: 12px;
+    }
+
+
+    .header-login-icon,
+    .header-user-icon {
+        font-size: 19px;
+    }
+
+
+    .welcome-area {
+        margin-top: 105px;
+    }
+
+
+    .welcome-title,
+    .welcome-text {
+        font-size: 16px;
+    }
+
+
+    .welcome-title {
+        margin-bottom: 25px;
+    }
+
+
+    .message-form {
+        width: calc(100% - 24px);
+
+        height: 44px;
+
+        margin:
+            auto
+            12px
+            12px;
+    }
+
+
+    .message-input {
+        font-size: 13px;
+    }
+
+
+    .footer {
+        height: 62px;
+
+        font-size: 13px;
+    }
+
+}
+
+
+
+/* ========================================
+   PCでスマホ画面を確認するとき
+======================================== */
 
 @media (min-width: 600px) {
 
-    .page-shell {
+    body {
         max-width: 412px;
 
-        margin: 0 auto;
+        margin:
+            0
+            auto;
 
-        border-left: 1px solid #333333;
-        border-right: 1px solid #333333;
+        border-left:
+            1px
+            solid
+            #555555;
+
+        border-right:
+            1px
+            solid
+            #555555;
     }
 
 }

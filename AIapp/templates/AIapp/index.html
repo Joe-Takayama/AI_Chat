@@ -1,8 +1,61 @@
 {% extends "base/base.html" %}
+
 {% load static %}
-{% block title %}AI Chat - Index{% endblock %}
+
+
+{% block title %}
+
+ChatBoy
+
+{% endblock %}
+
 
 {% block content %}
-    <h2>index.htmlの行</h2>
-    <p>Welcome to the AI Chat index page!</p>
+
+<section class="chat-top">
+
+
+    <div class="welcome-area">
+
+        <p class="welcome-title">
+            ChatBoyへようこそ！
+        </p>
+
+        <p class="welcome-text">
+            何でも質問してください。
+        </p>
+
+    </div>
+
+
+    <form
+        method="post"
+        class="message-form"
+    >
+
+        {% csrf_token %}
+
+
+        <input
+            type="text"
+            name="message"
+            class="message-input"
+            placeholder="メッセージを入力"
+        >
+
+
+        <button
+            type="submit"
+            class="send-button"
+            aria-label="送信"
+        >
+            ⇧
+        </button>
+
+
+    </form>
+
+
+</section>
+
 {% endblock %}

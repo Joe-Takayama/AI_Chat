@@ -3,36 +3,136 @@
 <!DOCTYPE html>
 <html lang="ja">
 
-    <head>
-        <meta charset='UTF-8'>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<head>
 
-        <title>
-            {% block title %}
-                ChatBoy
-            {% endblock %}
-        </title>
+    <meta charset="UTF-8">
 
-        <link rel='stylesheet' href="{% static 'css/base.css' %}" />
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-        {% block css%}
+    <title>
+        {% block title %}
+            ChatBoy
         {% endblock %}
-    </head>
+    </title>
 
-    <body>
+    <link
+        rel="stylesheet"
+        href="{% static 'css/base.css' %}"
+    >
 
-        <!-- ページごとにヘッダーを変更 -->
-        {% block header %}
-        {% endblock %}
+    {% block css %}
+    {% endblock %}
 
-        <!-- ページごとにコンテンツを変更 -->
+</head>
+
+<body>
+
+
+    <!-- TOP画面のヘッダー -->
+
+    <header class="top-header">
+
+        <!-- 左：メニュー -->
+
+        <button
+            type="button"
+            class="menu-button"
+            aria-label="メニュー"
+        >
+            ☰
+        </button>
+
+
+        <!-- ChatBoy -->
+
+        <a
+            href="{% url 'AIapp:index' %}"
+            class="top-logo"
+        >
+            ChatBoy
+        </a>
+
+
+        <!-- 右側 -->
+
+        <div class="header-right">
+
+
+            {% if user.is_authenticated %}
+
+                <!-- ログイン済み -->
+
+                <span class="header-login-icon">
+                    ⇥
+                </span>
+
+
+                <!--
+                    今はデフォルトユーザーアイコン
+                    後でプロフィール画像などに変更可能
+                -->
+
+                <a
+                    href="#"
+                    class="header-user-icon"
+                    aria-label="アカウント"
+                >
+                    👤
+                </a>
+
+
+            {% else %}
+
+                <!-- 未ログイン -->
+
+                <a
+                    href="{% url 'accounts:login' %}"
+                    class="header-login-icon"
+                    aria-label="ログイン"
+                >
+                    ⇥
+                </a>
+
+
+                <a
+                    href="{% url 'accounts:signup' %}"
+                    class="header-user-icon"
+                    aria-label="新規登録"
+                >
+                    ♙
+                </a>
+
+
+            {% endif %}
+
+
+        </div>
+
+    </header>
+
+
+    <!-- ページごとの内容 -->
+
+    <main class="main-content">
+
         {% block content %}
         {% endblock %}
 
-        <!-- フッターは前頁共通 -->
-        <footer class="footer">
-            &copy; 2026 ChatBoy
-        </footer>
-        
-    </body>
+    </main>
+
+
+    <!-- 共通フッター -->
+
+    <footer class="footer">
+
+        &copy; 2026 ChatBoy
+
+    </footer>
+
+
+</body>
+
 </html>

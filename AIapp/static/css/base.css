@@ -1,0 +1,96 @@
+/* ==============================
+   共通設定
+============================== */
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+
+    width: 100%;
+    min-height: 100%;
+}
+
+body {
+    min-height: 100dvh;
+
+    font-family:
+        Arial,
+        "Helvetica Neue",
+        sans-serif;
+
+    color: #111111;
+
+    background-color: #eef1f5;
+}
+
+
+/* ==============================
+   ページ全体
+============================== */
+
+.page-shell {
+    width: 100%;
+    min-height: 100dvh;
+
+    display: flex;
+    flex-direction: column;
+
+    background-color: #f7f8fa;
+}
+
+
+/* ==============================
+   メイン部分
+============================== */
+
+.page-main {
+    width: 100%;
+
+    flex: 1;
+}
+
+
+/* ==============================
+   フッター
+============================== */
+
+.footer {
+    width: 100%;
+    height: 66px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: #d9d9d9;
+
+    border-top: 1px solid #333333;
+
+    font-size: 16px;
+}
+
+
+/* ==============================
+   PC表示
+   Figmaのスマホ幅に近づける
+============================== */
+
+@media (min-width: 600px) {
+
+    .page-shell {
+        max-width: 412px;
+
+        margin: 0 auto;
+
+        border-left: 1px solid #333333;
+        border-right: 1px solid #333333;
+    }
+
+}

@@ -1,154 +1,245 @@
 {% extends 'base2/base2.html' %}
+
 {% load static %}
 
+
 {% block title %}
+
     アカウント新規登録 | ChatBoy
+
 {% endblock %}
+
 
 {% block css %}
-    <link rel='stylesheet' href="{% static 'css/accounts.css' %}" />
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/accounts.css' %}"
+    >
+
 {% endblock %}
+
 
 {% block header %}
-    <header class="auth-header">
-        <a href="{% url 'AIapp:index' %}" class='header-side-button' aria-label='ホーム'>
-            ←
-        </a>
 
-        <div class='header-logo'>
-            ChatBoy
-        </div>
+<header class="auth-header">
 
-        <a href="{% url 'accounts:login' %}" class='header-side-button' aria-label='ログイン'>
-            ⇥
-        </a>
-    </header>
+    <a
+        href="{% url 'AIapp:index' %}"
+        class="header-side-button"
+        aria-label="ホーム"
+    >
+        ←
+    </a>
+
+
+    <div class="header-logo">
+        ChatBoy
+    </div>
+
+
+    <a
+        href="{% url 'accounts:login' %}"
+        class="header-side-button"
+        aria-label="ログイン"
+    >
+        ⇥
+    </a>
+
+</header>
+
 {% endblock %}
 
+
 {% block content %}
-    <section class='auth-page'>
 
-        <h1 class='auth-title'>
-            アカウント登録
-        </h1>
+<section class="auth-page">
 
-        <form method='post' class='auth-form'>
-            {% csrf_token %}
 
-            <!-- form全体のエラー -->
-            {% if form.non_field_errors %}
+    <h1 class="auth-title">
+        アカウント登録
+    </h1>
 
-                <div class='form-error'>
 
-                    {% for error in form.non_field_errors %}
+    <form
+        method="post"
+        class="auth-form"
+    >
+
+        {% csrf_token %}
+
+
+        <!-- フォーム全体のエラー -->
+
+        {% if form.non_field_errors %}
+
+            <div class="form-error">
+
+                {% for error in form.non_field_errors %}
+
+                    {{ error }}
+
+                {% endfor %}
+
+            </div>
+
+        {% endif %}
+
+
+
+        <!-- ユーザー名 -->
+
+        <div class="form-group">
+
+            <label
+                for="{{ form.username.id_for_label }}"
+                class="form-label"
+            >
+                {{ form.username.label }}
+            </label>
+
+
+            {{ form.username }}
+
+
+            {% if form.username.errors %}
+
+                <div class="field-error">
+
+                    {% for error in form.username.errors %}
+
                         {{ error }}
+
                     {% endfor %}
 
                 </div>
+
             {% endif %}
 
-            <!-- 各フィールドのエラー -->
-            {% for field in form %}
-            
-                {% if field.errors %}
-                    <div class='form-error'>
-
-                        {% for error in field.errors %}
-                            {{ error }}
-                        {% endfor %}
-
-                    </div>
-                {% endif %}
-
-            {% endfor %}
-            
-            <!-- ユーザー名 -->
-            <div class='form_group'>
-
-                <label for='{{ form.username.id_for_label }}' class='form-label'>
-                    {{ form.username.label }}
-                </label>
-
-                {{ form.username }}
-
-                {% if form.username.errors %}
-
-                    <div class='field-error'>
-                        {{ form.username.errors }}
-                    </div>
-                {% endif %}
-                
-            </div>
-
-            <!-- メールアドレス -->
-            <div class='form-group'>
-
-                <label for='{{ form.email.id_for_label }}' class='form-label'>
-                    {{ form.email.label }}
-                </label>
-
-                {{ form.email }}
-
-                {% if form.email.errors %}
-
-                    <div class='field-error'>
-                        {{ form.email.errors }}
-                    </div>
-
-                {% endif %}
-
-            </div>
-
-            <!-- パスワード -->
-            <div class='form-group'>
-
-                <label for='{{ form.password1.id_for_label }}' class='form-label'>
-                    {{ form.password1.label }}
-                </label>
-
-                {{ form.password1 }}
-
-                {% if form.password1.errors %}
-
-                    <div class='field-error'>
-                        {{ form.password1.errors }}
-                    </div>
-
-                {% endif %}
-
-            </div>
-
-            <!-- パスワード確認 -->
-            <div class='form-group'>
-
-                <label for='{{ form.password2.id_for_label }}' class='form-label'>
-                    {{ form.password2.label }}
-                </label>
-
-                {{ form.password2 }}
-
-                {% if form.password2.errors %}
-                
-                    <div class='field-error'>
-                        {{ form.password2.errors }}
-                    </div>
-
-                {% endif %}
-            
-            </div>
-
-            <!-- 新規登録ボタン -->
-            <button type='submit' class='auth-button'>
-                新規登録
-            </button>
-
-        </form>
-
-        <div class='auth-links'>
-
-            <a href="{% url 'accounts:login' %}">
-                既にアカウントをお持ちの方→
-            </a>
         </div>
-    </section>
+
+
+
+        <!-- メールアドレス -->
+
+        <div class="form-group">
+
+            <label
+                for="{{ form.email.id_for_label }}"
+                class="form-label"
+            >
+                {{ form.email.label }}
+            </label>
+
+
+            {{ form.email }}
+
+
+            {% if form.email.errors %}
+
+                <div class="field-error">
+
+                    {% for error in form.email.errors %}
+
+                        {{ error }}
+
+                    {% endfor %}
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+
+
+        <!-- パスワード -->
+
+        <div class="form-group">
+
+            <label
+                for="{{ form.password1.id_for_label }}"
+                class="form-label"
+            >
+                {{ form.password1.label }}
+            </label>
+
+
+            {{ form.password1 }}
+
+
+            {% if form.password1.errors %}
+
+                <div class="field-error">
+
+                    {% for error in form.password1.errors %}
+
+                        {{ error }}
+
+                    {% endfor %}
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+
+
+        <!-- パスワード確認 -->
+
+        <div class="form-group">
+
+            <label
+                for="{{ form.password2.id_for_label }}"
+                class="form-label"
+            >
+                {{ form.password2.label }}
+            </label>
+
+
+            {{ form.password2 }}
+
+
+            {% if form.password2.errors %}
+
+                <div class="field-error">
+
+                    {% for error in form.password2.errors %}
+
+                        {{ error }}
+
+                    {% endfor %}
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+
+
+        <!-- 新規登録ボタン -->
+
+        <button
+            type="submit"
+            class="auth-button"
+        >
+            新規登録
+        </button>
+
+    </form>
+
+
+    <div class="auth-links">
+
+        <a href="{% url 'accounts:login' %}">
+            既にアカウントをお持ちの方→
+        </a>
+
+    </div>
+
+
+</section>
+
 {% endblock %}

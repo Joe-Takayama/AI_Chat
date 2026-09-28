@@ -7,12 +7,14 @@ class SignUpForm(UserCreationForm):
 
     password1 = forms.CharField(
         widget=forms.PasswordInput(attrs={
+            'class': 'auth-input',
             'placeholder': 'パスワードを入力してください',
         })
     )
 
     password2 = forms.CharField(
         widget=forms.PasswordInput(attrs={
+            'class': 'auth-input',
             'placeholder': 'パスワードを再入力してください',
         })
     )
@@ -30,11 +32,13 @@ class SignUpForm(UserCreationForm):
 
         widgets = {
             'username': forms.TextInput(attrs={
+                'class': 'auth-input',
                 'placeholder': 'ユーザー名を入力してください',
             }),
 
 
             'email': forms.EmailInput(attrs={
+                'class': 'auth-input',
                 'placeholder': 'メールアドレスを入力してください',
             })
         }

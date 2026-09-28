@@ -7,7 +7,6 @@
     height: 116px;
 
     display: grid;
-
     grid-template-columns:
         60px
         1fr
@@ -71,6 +70,7 @@
 }
 
 
+
 /* ==============================
    タイトル
 ============================== */
@@ -99,16 +99,30 @@
 }
 
 
-/* 各入力グループ */
+
+/* ==============================
+   各入力項目
+============================== */
 
 .form-group {
     width: 100%;
 
-    margin-bottom: 65px;
+    margin-bottom: 60px;
 }
 
 
-/* ラベル */
+/* 最後の入力欄だけ
+   ボタンとの距離を少し調整 */
+
+.form-group:last-of-type {
+    margin-bottom: 45px;
+}
+
+
+
+/* ==============================
+   ラベル
+============================== */
 
 .form-label {
     display: block;
@@ -119,6 +133,7 @@
 
     font-weight: 400;
 }
+
 
 
 /* ==============================
@@ -166,7 +181,7 @@
 
 
 /* ==============================
-   ログイン・登録ボタン
+   ログイン・新規登録ボタン
 ============================== */
 
 .auth-button {
@@ -176,9 +191,8 @@
     height: 40px;
 
     margin:
-        10px
-        auto
-        0;
+        0
+        auto;
 
     border: none;
 
@@ -194,8 +208,6 @@
 }
 
 
-/* hover */
-
 .auth-button:hover {
     background-color: #cccccc;
 }
@@ -207,12 +219,10 @@
 ============================== */
 
 .auth-links {
-    margin-top: 85px;
+    margin-top: 70px;
 
     display: flex;
-
     flex-direction: column;
-
     align-items: center;
 
     gap: 35px;
@@ -246,21 +256,15 @@
 }
 
 
-/* フォーム全体エラー */
-
 .form-error {
     margin-bottom: 20px;
 }
 
 
-/* 各入力欄のエラー */
-
 .field-error {
     margin-top: 6px;
 }
 
-
-/* Djangoがulでエラーを出す場合 */
 
 .form-error ul,
 .field-error ul {
@@ -316,7 +320,14 @@
     }
 
 
+    .form-group:last-of-type {
+        margin-bottom: 40px;
+    }
+
+
     .form-label {
+        margin-bottom: 14px;
+
         font-size: 17px;
     }
 
@@ -329,7 +340,7 @@
 
 
     .auth-links {
-        margin-top: 70px;
+        margin-top: 60px;
 
         gap: 30px;
     }

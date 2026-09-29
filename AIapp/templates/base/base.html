@@ -28,19 +28,23 @@
 
 </head>
 
+
 <body>
 
 
-    <!-- TOP画面のヘッダー -->
+    <!-- =============================
+         ヘッダー
+    ============================== -->
 
     <header class="top-header">
 
-        <!-- 左：メニュー -->
+        <!-- 三本線 -->
 
         <button
             type="button"
             class="menu-button"
-            aria-label="メニュー"
+            id="menuButton"
+            aria-label="メニューを開く"
         >
             ☰
         </button>
@@ -60,7 +64,6 @@
 
         <div class="header-right">
 
-
             {% if user.is_authenticated %}
 
                 <!-- ログイン済み -->
@@ -69,12 +72,6 @@
                     ⇥
                 </span>
 
-
-                <!--
-                    今はデフォルトユーザーアイコン
-                    後でプロフィール画像などに変更可能
-                -->
-
                 <a
                     href="#"
                     class="header-user-icon"
@@ -82,7 +79,6 @@
                 >
                     👤
                 </a>
-
 
             {% else %}
 
@@ -96,7 +92,6 @@
                     ⇥
                 </a>
 
-
                 <a
                     href="{% url 'accounts:signup' %}"
                     class="header-user-icon"
@@ -105,16 +100,194 @@
                     ♙
                 </a>
 
-
             {% endif %}
-
 
         </div>
 
     </header>
 
 
-    <!-- ページごとの内容 -->
+
+    <!-- =============================
+         サイドバー
+    ============================== -->
+
+    <aside
+        class="sidebar"
+        id="sidebar"
+    >
+
+        <!-- サイドバー上部 -->
+
+        <div class="sidebar-header">
+
+            <button
+                type="button"
+                class="sidebar-close"
+                id="sidebarClose"
+                aria-label="メニューを閉じる"
+            >
+                ×
+            </button>
+
+            <span class="sidebar-logo">
+                ChatBoy
+            </span>
+
+        </div>
+
+
+        <!-- 新しいチャット -->
+
+        <a
+            href="{% url 'AIapp:index' %}"
+            class="sidebar-menu-item"
+        >
+            <span class="sidebar-menu-icon">
+                □
+            </span>
+
+            <span>
+                新しいチャット
+            </span>
+        </a>
+
+
+        <!-- チャット履歴 -->
+
+        <div class="history-title">
+
+            <span class="sidebar-menu-icon">
+                💬
+            </span>
+
+            <span>
+                チャット履歴
+            </span>
+
+        </div>
+
+
+
+        {% if user.is_authenticated %}
+
+            <!-- =========================
+                 ログイン済み
+            ========================== -->
+
+            <div class="history-area">
+
+                <!--
+                    後でDBから履歴を表示する。
+                    今は仮表示。
+                -->
+
+                <p class="history-empty">
+                    ここに履歴が<br>
+                    溜まっていく
+                </p>
+
+            </div>
+
+
+            <!-- 下部ユーザー情報 -->
+
+            <div class="sidebar-user-area">
+
+                <a
+                    href="#"
+                    class="sidebar-user"
+                >
+                    <span>
+                        👤
+                    </span>
+
+                    <span>
+                        {{ user.username }}
+                    </span>
+                </a>
+
+
+                <!--
+                    ログアウト処理は後で
+                    accounts:logout を作ったら変更
+                -->
+
+                <button
+                    type="button"
+                    class="sidebar-logout"
+                >
+                    <span>
+                        ⇥
+                    </span>
+
+                    <span>
+                        ログアウト
+                    </span>
+                </button>
+
+            </div>
+
+
+        {% else %}
+
+            <!-- =========================
+                 未ログイン
+            ========================== -->
+
+            <div class="guest-sidebar-content">
+
+                <div class="guest-lock">
+                    🔒
+                </div>
+
+
+                <p class="guest-message">
+
+                    チャット履歴を利用する際には<br>
+                    ログインしてください
+
+                </p>
+
+
+                <a
+                    href="{% url 'accounts:login' %}"
+                    class="sidebar-auth-button"
+                >
+                    ログイン
+                </a>
+
+
+                <a
+                    href="{% url 'accounts:signup' %}"
+                    class="sidebar-auth-button"
+                >
+                    新規登録
+                </a>
+
+            </div>
+
+        {% endif %}
+
+
+    </aside>
+
+
+
+    <!-- =============================
+         サイドバーを開いた時の暗い背景
+    ============================== -->
+
+    <div
+        class="sidebar-overlay"
+        id="sidebarOverlay"
+    ></div>
+
+
+
+    <!-- =============================
+         ページ固有部分
+    ============================== -->
 
     <main class="main-content">
 
@@ -124,13 +297,26 @@
     </main>
 
 
-    <!-- 共通フッター -->
+
+    <!-- =============================
+         フッター
+    ============================== -->
 
     <footer class="footer">
 
         &copy; 2026 ChatBoy
 
     </footer>
+
+
+
+    <!-- =============================
+         JavaScript
+    ============================== -->
+
+    <script
+        src="{% static 'js/sidebar.js' %}"
+    ></script>
 
 
 </body>

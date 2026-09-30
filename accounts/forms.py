@@ -56,7 +56,7 @@ class SignUpForm(UserCreationForm):
         email = self.cleaned_data['email']
 
         if User.objects.filter(
-            email_iexact=email
+            email__iexact=email
         ).exists():
             raise forms.ValidationError(
                 'このメールアドレスは既に使用されています。'

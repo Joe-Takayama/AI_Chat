@@ -46,7 +46,7 @@ class LoginView(View):
 
             user_data = User.objects.filter(email__iexact=email).first()
 
-            if user_data is not None:
+            if user_data is None:
 
                 form.add_error(None, 'メールアドレスまたは正しくありません。')
 
@@ -55,7 +55,7 @@ class LoginView(View):
 
                 if user is not None:
                     login(request, user)
-                    return redirect('accounts:index')
+                    return redirect('AIapp:index')
 
                 else:
                     form.add_error(None, 'メールアドレスまたは正しくありません。')
@@ -65,7 +65,7 @@ class LoginView(View):
 
 class LogOutView(View):
 
-    def get(self, request):
+    def post(self, request):
         logout(request)
 
-        return render('accounts:login')        
+        return redirect('AIapp:index')        

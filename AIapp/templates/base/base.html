@@ -38,6 +38,7 @@
 
     <header class="top-header">
 
+
         <!-- 三本線 -->
 
         <button
@@ -60,17 +61,43 @@
         </a>
 
 
-        <!-- 右側 -->
+        <!-- =============================
+             ヘッダー右側
+        ============================== -->
 
         <div class="header-right">
 
+
             {% if user.is_authenticated %}
 
-                <!-- ログイン済み -->
 
-                <span class="header-login-icon">
-                    ⇥
-                </span>
+                <!-- =========================
+                     ログイン済み
+                ========================== -->
+
+
+                <!-- ログアウト -->
+
+                <form
+                    method="post"
+                    action="{% url 'accounts:logout' %}"
+                    class="header-logout-form"
+                >
+
+                    {% csrf_token %}
+
+                    <button
+                        type="submit"
+                        class="header-logout-button"
+                        aria-label="ログアウト"
+                    >
+                        ⇥
+                    </button>
+
+                </form>
+
+
+                <!-- ユーザーアイコン -->
 
                 <a
                     href="#"
@@ -80,9 +107,16 @@
                     👤
                 </a>
 
+
             {% else %}
 
-                <!-- 未ログイン -->
+
+                <!-- =========================
+                     未ログイン
+                ========================== -->
+
+
+                <!-- ログイン -->
 
                 <a
                     href="{% url 'accounts:login' %}"
@@ -92,6 +126,9 @@
                     ⇥
                 </a>
 
+
+                <!-- 新規登録 -->
+
                 <a
                     href="{% url 'accounts:signup' %}"
                     class="header-user-icon"
@@ -100,7 +137,9 @@
                     ♙
                 </a>
 
+
             {% endif %}
+
 
         </div>
 
@@ -117,7 +156,10 @@
         id="sidebar"
     >
 
-        <!-- サイドバー上部 -->
+
+        <!-- =========================
+             サイドバー上部
+        ========================== -->
 
         <div class="sidebar-header">
 
@@ -130,6 +172,7 @@
                 ×
             </button>
 
+
             <span class="sidebar-logo">
                 ChatBoy
             </span>
@@ -137,12 +180,16 @@
         </div>
 
 
-        <!-- 新しいチャット -->
+
+        <!-- =========================
+             新しいチャット
+        ========================== -->
 
         <a
             href="{% url 'AIapp:index' %}"
             class="sidebar-menu-item"
         >
+
             <span class="sidebar-menu-icon">
                 □
             </span>
@@ -150,10 +197,14 @@
             <span>
                 新しいチャット
             </span>
+
         </a>
 
 
-        <!-- チャット履歴 -->
+
+        <!-- =========================
+             チャット履歴
+        ========================== -->
 
         <div class="history-title">
 
@@ -171,15 +222,19 @@
 
         {% if user.is_authenticated %}
 
+
             <!-- =========================
                  ログイン済み
             ========================== -->
 
+
+            <!-- チャット履歴表示部分 -->
+
             <div class="history-area">
 
                 <!--
-                    後でDBから履歴を表示する。
-                    今は仮表示。
+                    後でDBからチャット履歴を取得して
+                    ここに表示する
                 -->
 
                 <p class="history-empty">
@@ -190,14 +245,21 @@
             </div>
 
 
-            <!-- 下部ユーザー情報 -->
+
+            <!-- =========================
+                 ユーザー情報
+            ========================== -->
 
             <div class="sidebar-user-area">
+
+
+                <!-- ユーザー -->
 
                 <a
                     href="#"
                     class="sidebar-user"
                 >
+
                     <span>
                         👤
                     </span>
@@ -205,31 +267,46 @@
                     <span>
                         {{ user.username }}
                     </span>
+
                 </a>
 
 
-                <!--
-                    ログアウト処理は後で
-                    accounts:logout を作ったら変更
-                -->
 
-                <button
-                    type="button"
-                    class="sidebar-logout"
+                <!-- =========================
+                     ログアウト
+                ========================== -->
+
+                <form
+                    method="post"
+                    action="{% url 'accounts:logout' %}"
+                    class="logout-form"
                 >
-                    <span>
-                        ⇥
-                    </span>
 
-                    <span>
-                        ログアウト
-                    </span>
-                </button>
+                    {% csrf_token %}
+
+                    <button
+                        type="submit"
+                        class="sidebar-logout"
+                    >
+
+                        <span>
+                            ⇥
+                        </span>
+
+                        <span>
+                            ログアウト
+                        </span>
+
+                    </button>
+
+                </form>
+
 
             </div>
 
 
         {% else %}
+
 
             <!-- =========================
                  未ログイン
@@ -237,10 +314,16 @@
 
             <div class="guest-sidebar-content">
 
+
+                <!-- 鍵 -->
+
                 <div class="guest-lock">
                     🔒
                 </div>
 
+
+
+                <!-- 説明 -->
 
                 <p class="guest-message">
 
@@ -250,6 +333,9 @@
                 </p>
 
 
+
+                <!-- ログイン -->
+
                 <a
                     href="{% url 'accounts:login' %}"
                     class="sidebar-auth-button"
@@ -258,6 +344,9 @@
                 </a>
 
 
+
+                <!-- 新規登録 -->
+
                 <a
                     href="{% url 'accounts:signup' %}"
                     class="sidebar-auth-button"
@@ -265,7 +354,9 @@
                     新規登録
                 </a>
 
+
             </div>
+
 
         {% endif %}
 
@@ -275,7 +366,8 @@
 
 
     <!-- =============================
-         サイドバーを開いた時の暗い背景
+         サイドバーを開いた時の
+         半透明の黒い背景
     ============================== -->
 
     <div

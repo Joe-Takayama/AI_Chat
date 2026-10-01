@@ -54,7 +54,7 @@
         <!-- ChatBoy -->
 
         <a
-            href="{% url 'AIapp:index' %}"
+            href="{% url 'AIapp:new_chat' %}"
             class="top-logo"
         >
             ChatBoy
@@ -186,7 +186,7 @@
         ========================== -->
 
         <a
-            href="{% url 'AIapp:index' %}"
+            href="{% url 'AIapp:new_chat' %}"
             class="sidebar-menu-item"
         >
 
@@ -232,15 +232,30 @@
 
             <div class="history-area">
 
-                <!--
-                    後でDBからチャット履歴を取得して
-                    ここに表示する
-                -->
+                {% if chat_histories %}
 
-                <p class="history-empty">
-                    ここに履歴が<br>
-                    溜まっていく
-                </p>
+
+                    {% for chat in chat_histories %}
+
+                        <a
+                            href="{% url 'AIapp:chat_history' chat.id %}"
+                            class="history-item"
+                        >
+
+                            {{ chat.title }}
+
+                        </a>
+
+                    {% endfor %}
+
+
+                {% else %}
+
+                    <p class="history-empty">
+                        チャット履歴はまだありません
+                    </p>
+
+                {% endif %}
 
             </div>
 

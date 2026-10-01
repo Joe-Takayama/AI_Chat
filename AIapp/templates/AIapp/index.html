@@ -16,7 +16,7 @@ ChatBoy
 
 
     <!-- =========================
-         会話表示
+         会話表示エリア
     ========================== -->
 
     <div
@@ -38,7 +38,8 @@ ChatBoy
 
                     <div class="message-row user-row">
 
-                        <div class="message-name">
+
+                        <div class="message-name user-name">
 
                             {% if user.is_authenticated %}
 
@@ -59,6 +60,7 @@ ChatBoy
 
                         </div>
 
+
                     </div>
 
 
@@ -69,7 +71,8 @@ ChatBoy
 
                     <div class="message-row ai-row">
 
-                        <div class="message-name">
+
+                        <div class="message-name ai-name">
 
                             ChatBoy
 
@@ -81,6 +84,7 @@ ChatBoy
                             {{ message.content|linebreaksbr }}
 
                         </div>
+
 
                     </div>
 
@@ -98,18 +102,51 @@ ChatBoy
 
             <div class="welcome-area">
 
+
                 <p class="welcome-title">
+
                     ChatBoyへようこそ！
+
                 </p>
 
+
                 <p class="welcome-text">
+
                     何でも質問してください。
+
                 </p>
+
 
             </div>
 
 
         {% endif %}
+
+
+
+        <!-- =========================
+             AI回答生成中
+        ========================== -->
+
+        <div
+            class="message-row ai-row generating-message"
+            id="generatingMessage"
+        >
+
+            <div class="message-name ai-name">
+
+                ChatBoy
+
+            </div>
+
+
+            <div class="message-bubble ai-bubble generating-bubble">
+
+                回答を生成中...
+
+            </div>
+
+        </div>
 
 
     </div>
@@ -123,6 +160,7 @@ ChatBoy
     <form
         method="post"
         class="message-form"
+        id="messageForm"
     >
 
         {% csrf_token %}
@@ -134,6 +172,7 @@ ChatBoy
         <button
             type="submit"
             class="send-button"
+            id="sendButton"
             aria-label="送信"
         >
             ⇧
@@ -143,7 +182,6 @@ ChatBoy
     </form>
 
 
-    <!-- 入力エラー -->
 
     {% if form.message.errors %}
 
@@ -163,13 +201,96 @@ ChatBoy
 <script>
 
     const chatMessages =
-        document.getElementById("chatMessages");
+        document.getElementById(
+            "chatMessages"
+        );
 
+    const messageForm =
+        document.getElementById(
+            "messageForm"
+        );
+
+    const generatingMessage =
+        document.getElementById(
+            "generatingMessage"
+        );
+
+    const sendButton =
+        document.getElementById(
+            "sendButton"
+        );
+
+
+    // =====================================
+    // ページを開いた時
+    // 最新の会話までスクロール
+    // =====================================
 
     if (chatMessages) {
 
         chatMessages.scrollTop =
             chatMessages.scrollHeight;
+
+    }
+
+
+
+    // =====================================
+    // メッセージ送信時
+    // =====================================
+
+    if (messageForm) {
+
+        messageForm.addEventListener(
+            "submit",
+            function (event) {
+
+                // 一旦POST送信を止める
+                event.preventDefault();
+
+
+                // 「回答を生成中...」を表示
+                generatingMessage.classList.add(
+                    "show"
+                );
+
+
+                // 二重送信を防ぐ
+                sendButton.disabled = true;
+
+
+                // 入力欄も操作できなくする
+                const messageInput =
+                    messageForm.querySelector(
+                        ".message-input"
+                    );
+
+                if (messageInput) {
+
+                    messageInput.readOnly = true;
+
+                }
+
+
+                // 「回答を生成中...」まで
+                // 自動スクロール
+                chatMessages.scrollTop =
+                    chatMessages.scrollHeight;
+
+
+                // ブラウザに表示させる時間を
+                // 少しだけ作ってからPOST
+                setTimeout(
+                    function () {
+
+                        messageForm.submit();
+
+                    },
+                    100
+                );
+
+            }
+        );
 
     }
 

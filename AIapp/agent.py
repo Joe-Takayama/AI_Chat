@@ -1,25 +1,238 @@
 from google import genai
+import time
 
+
+# ========================================
+# Geminiクライアント
+# ========================================
 
 client = genai.Client()
 
 
-def ask_ai(message, previous_interaction_id=None):
+
+# ========================================
+# Google検索が必要か判定
+# ========================================
+
+def needs_web_search(message):
+
+    # ------------------------------------
+    # 現在・最新情報を求めている言葉
+    # ------------------------------------
+
+    realtime_keywords = [
+
+        "今日",
+        "本日",
+
+        "明日",
+        "あした",
+
+        "昨日",
+
+        "現在",
+        "現時点",
+
+        "今の",
+        "いまの",
+
+        "最新",
+
+        "速報",
+
+        "リアルタイム",
+
+        "今週",
+        "今月",
+        "今年",
+
+        "最近",
+
+        "さっき",
+
+        "今どうなって",
+        "今どうなってる",
+        "今どうなっている",
+    ]
+
+
+    # ------------------------------------
+    # ユーザーが明示的に
+    # 検索を要求している言葉
+    # ------------------------------------
+
+    search_request_keywords = [
+
+        "検索して",
+
+        "調べて",
+
+        "ネットで調べて",
+
+        "Webで調べて",
+        "webで調べて",
+
+        "ウェブで調べて",
+
+        "最新情報を調べて",
+
+        "検索して教えて",
+
+        "ネットで検索して",
+
+        "出典を調べて",
+    ]
+
+
+    # ------------------------------------
+    # 現在・最新情報の判定
+    # ------------------------------------
+
+    for keyword in realtime_keywords:
+
+        if keyword in message:
+
+            return True
+
+
+    # ------------------------------------
+    # 明示的な検索要求の判定
+    # ------------------------------------
+
+    for keyword in search_request_keywords:
+
+        if keyword in message:
+
+            return True
+
+
+    # ------------------------------------
+    # どれにも当てはまらなければ
+    # 検索しない
+    # ------------------------------------
+
+    return False
+
+
+
+# ========================================
+# Geminiへ質問
+# ========================================
+
+def ask_ai(
+    message,
+    previous_interaction_id=None
+):
+
+    # 回答時間計測開始
+    start = time.perf_counter()
+
+
+    # ====================================
+    # Google検索が必要か確認
+    # ====================================
+
+    use_search = needs_web_search(
+        message
+    )
+
+
+    # ====================================
+    # Geminiへ渡す基本設定
+    # ====================================
+
+    params = {
+
+        "model":
+            "gemini-3.5-flash-lite",
+
+        "input":
+            message,
+
+        "generation_config": {
+
+            # 回答速度優先
+            "thinking_level":
+                "minimal"
+        },
+
+        # 最大待機時間
+        "timeout":
+            10,
+    }
+
+
+    # ====================================
+    # 前回の会話がある場合
+    # ====================================
 
     if previous_interaction_id:
 
-        interaction = client.interactions.create(
-            model="gemini-3.7-flash",
-            input=message,
-            previous_interaction_id=previous_interaction_id
+        params[
+            "previous_interaction_id"
+        ] = previous_interaction_id
+
+
+    # ====================================
+    # 必要な場合だけ
+    # Google検索を使用
+    # ====================================
+
+    if use_search:
+
+        params[
+            "tools"
+        ] = [
+
+            {
+                "type":
+                    "google_search"
+            }
+
+        ]
+
+
+        print(
+            "Google検索：あり"
         )
+
 
     else:
 
-        interaction = client.interactions.create(
-            model="gemini-3.7-flash",
-            input=message
+        print(
+            "Google検索：なし"
         )
 
 
-    return interaction.output_text, interaction.id
+    # ====================================
+    # Geminiへ送信
+    # ====================================
+
+    interaction = (
+        client.interactions.create(
+            **params
+        )
+    )
+
+
+    # ====================================
+    # 回答時間計測終了
+    # ====================================
+
+    end = time.perf_counter()
+
+
+    print(
+        f"Gemini回答時間: "
+        f"{end - start:.2f}秒"
+    )
+
+
+    # ====================================
+    # 回答本文と会話IDを返す
+    # ====================================
+
+    return (
+        interaction.output_text,
+        interaction.id
+    )

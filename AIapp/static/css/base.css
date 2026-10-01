@@ -13,15 +13,17 @@ body {
     padding: 0;
 
     width: 100%;
-    min-height: 100%;
+    height: 100%;
 }
 
 
 body {
-    min-height: 100dvh;
+    height: 100dvh;
 
     display: flex;
     flex-direction: column;
+
+    overflow: hidden;
 
     font-family:
         Arial,
@@ -77,6 +79,7 @@ body {
     height: 36px;
 
     display: flex;
+
     justify-content: center;
     align-items: center;
 
@@ -135,6 +138,7 @@ body {
     height: 30px;
 
     display: flex;
+
     justify-content: center;
     align-items: center;
 
@@ -154,6 +158,7 @@ body {
     height: 30px;
 
     display: flex;
+
     justify-content: center;
     align-items: center;
 
@@ -167,6 +172,47 @@ body {
 
 
 /* ========================================
+   ヘッダーのログアウトフォーム
+======================================== */
+
+.header-logout-form {
+    margin: 0;
+    padding: 0;
+
+    display: flex;
+
+    align-items: center;
+}
+
+
+
+/* ヘッダーのログアウトボタン */
+
+.header-logout-button {
+    width: 30px;
+    height: 30px;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    padding: 0;
+
+    border: none;
+
+    background-color: transparent;
+
+    color: #111111;
+
+    font-size: 21px;
+
+    cursor: pointer;
+}
+
+
+
+/* ========================================
    メイン
 ======================================== */
 
@@ -174,6 +220,8 @@ body {
     width: 100%;
 
     flex: 1;
+
+    min-height: 0;
 
     display: flex;
 
@@ -183,13 +231,15 @@ body {
 
 
 /* ========================================
-   TOP画面
+   TOP・チャット画面全体
 ======================================== */
 
 .chat-top {
     width: 100%;
 
     flex: 1;
+
+    min-height: 0;
 
     display: flex;
 
@@ -199,13 +249,34 @@ body {
 
 
 /* ========================================
-   ようこそ表示
+   会話表示エリア
+======================================== */
+
+.chat-messages {
+    width: 100%;
+
+    flex: 1;
+
+    min-height: 0;
+
+    overflow-y: auto;
+
+    padding:
+        35px
+        18px
+        25px;
+}
+
+
+
+/* ========================================
+   まだ会話していない時
 ======================================== */
 
 .welcome-area {
     width: 100%;
 
-    margin-top: 120px;
+    margin-top: 85px;
 
     text-align: center;
 }
@@ -234,6 +305,118 @@ body {
 
 
 /* ========================================
+   1件の会話
+======================================== */
+
+.message-row {
+    width: 100%;
+
+    display: flex;
+
+    flex-direction: column;
+
+    margin-bottom: 42px;
+}
+
+
+
+/* ========================================
+   ユーザー側
+   右寄せ
+======================================== */
+
+.user-row {
+    align-items: flex-end;
+}
+
+
+
+/* ========================================
+   ChatBoy側
+   左寄せ
+======================================== */
+
+.ai-row {
+    align-items: flex-start;
+}
+
+
+
+/* ========================================
+   名前
+======================================== */
+
+.message-name {
+    margin-bottom: 4px;
+
+    color: #111111;
+
+    font-size: 12px;
+
+    line-height: 1.2;
+}
+
+
+.user-name {
+    text-align: right;
+}
+
+
+.ai-name {
+    text-align: left;
+}
+
+
+
+/* ========================================
+   吹き出し共通
+======================================== */
+
+.message-bubble {
+    max-width: 72%;
+
+    padding:
+        6px
+        18px;
+
+    border-radius: 16px;
+
+    background-color: #d9d9d9;
+
+    color: #111111;
+
+    font-size: 13px;
+
+    line-height: 1.5;
+
+    word-break: break-word;
+
+    overflow-wrap: anywhere;
+}
+
+
+
+/* ========================================
+   ユーザー吹き出し
+======================================== */
+
+.user-bubble {
+    text-align: left;
+}
+
+
+
+/* ========================================
+   ChatBoy吹き出し
+======================================== */
+
+.ai-bubble {
+    text-align: left;
+}
+
+
+
+/* ========================================
    メッセージ入力フォーム
 ======================================== */
 
@@ -242,8 +425,10 @@ body {
 
     height: 46px;
 
+    flex-shrink: 0;
+
     margin:
-        auto
+        0
         14px
         14px;
 
@@ -261,7 +446,9 @@ body {
 
 
 
-/* メッセージ入力欄 */
+/* ========================================
+   メッセージ入力欄
+======================================== */
 
 .message-input {
     min-width: 0;
@@ -323,6 +510,25 @@ body {
 
 
 /* ========================================
+   チャット入力エラー
+======================================== */
+
+.message-error {
+    flex-shrink: 0;
+
+    margin:
+        0
+        14px
+        8px;
+
+    color: #c62828;
+
+    font-size: 12px;
+}
+
+
+
+/* ========================================
    フッター
 ======================================== */
 
@@ -347,42 +553,6 @@ body {
     font-size: 14px;
 }
 
-/* ========================================
-   ヘッダーのログアウトフォーム
-======================================== */
-
-.header-logout-form {
-    margin: 0;
-    padding: 0;
-
-    display: flex;
-    align-items: center;
-}
-
-
-/* ヘッダーのログアウトボタン */
-
-.header-logout-button {
-    width: 30px;
-    height: 30px;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    padding: 0;
-
-    border: none;
-
-    background-color: transparent;
-
-    color: #111111;
-
-    font-size: 21px;
-
-    cursor: pointer;
-}
-
 
 
 /* ========================================
@@ -393,7 +563,443 @@ body {
     width: 100%;
 
     margin: 0;
+
     padding: 0;
+}
+
+
+
+/* ========================================
+   サイドバー
+======================================== */
+
+.sidebar {
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: 78%;
+
+    max-width: 320px;
+
+    height: 100dvh;
+
+    z-index: 1000;
+
+    display: flex;
+
+    flex-direction: column;
+
+    background-color: #ffffff;
+
+    border-right:
+        1px
+        solid
+        #999999;
+
+    transform:
+        translateX(-100%);
+
+    transition:
+        transform
+        0.3s
+        ease;
+}
+
+
+
+/* サイドバーが開いた状態 */
+
+.sidebar.open {
+    transform:
+        translateX(0);
+}
+
+
+
+/* ========================================
+   サイドバー上部
+======================================== */
+
+.sidebar-header {
+    height: 95px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    padding:
+        0
+        20px;
+
+    gap: 22px;
+}
+
+
+.sidebar-close {
+    width: 32px;
+    height: 32px;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    padding: 0;
+
+    border: none;
+
+    background: transparent;
+
+    color: #111111;
+
+    font-size: 25px;
+
+    cursor: pointer;
+}
+
+
+.sidebar-logo {
+    font-size: 20px;
+}
+
+
+
+/* ========================================
+   サイドバーメニュー
+======================================== */
+
+.sidebar-menu-item,
+.history-title {
+    width: 100%;
+
+    min-height: 75px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding:
+        0
+        20px;
+
+    color: #111111;
+
+    font-size: 16px;
+
+    text-decoration: none;
+}
+
+
+.sidebar-menu-item {
+    border-bottom:
+        1px
+        solid
+        #cccccc;
+}
+
+
+.sidebar-menu-icon {
+    width: 24px;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+}
+
+
+
+/* ========================================
+   チャット履歴
+======================================== */
+
+.history-title {
+    flex-shrink: 0;
+}
+
+
+.history-area {
+    flex: 1;
+
+    min-height: 0;
+
+    overflow-y: auto;
+
+    padding:
+        20px
+        25px;
+}
+
+/* ========================================
+   チャット履歴
+======================================== */
+
+.history-item {
+    width: 100%;
+
+    display: block;
+
+    margin-bottom: 8px;
+
+    padding:
+        10px
+        12px;
+
+    border-radius: 6px;
+
+    color: #111111;
+
+    background-color: transparent;
+
+    text-decoration: none;
+
+    font-size: 14px;
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    transition:
+        background-color
+        0.2s
+        ease;
+}
+
+
+/* マウスを乗せた時 */
+
+.history-item:hover {
+    background-color: #eeeeee;
+}
+
+
+/* 一度開いたリンクでも紫にしない */
+
+.history-item:visited {
+    color: #111111;
+}
+
+
+/* クリック中 */
+
+.history-item:active {
+    background-color: #dddddd;
+
+    color: #111111;
+}
+
+
+.history-empty {
+    margin:
+        30px
+        0;
+
+    line-height: 1.6;
+
+    font-size: 15px;
+}
+
+
+
+/* ========================================
+   未ログイン時
+======================================== */
+
+.guest-sidebar-content {
+    flex: 1;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    padding:
+        30px
+        20px;
+}
+
+
+.guest-lock {
+    margin-top: 20px;
+
+    font-size: 32px;
+}
+
+
+.guest-message {
+    margin:
+        55px
+        0
+        35px;
+
+    width: 100%;
+
+    text-align: left;
+
+    font-size: 14px;
+
+    line-height: 1.5;
+}
+
+
+.sidebar-auth-button {
+    width: 150px;
+    height: 42px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 45px;
+
+    border-radius: 6px;
+
+    background-color: #d9d9d9;
+
+    color: #111111;
+
+    text-decoration: none;
+
+    font-size: 14px;
+}
+
+
+
+/* ========================================
+   ログイン済みユーザー部分
+======================================== */
+
+.sidebar-user-area {
+    flex-shrink: 0;
+
+    padding:
+        18px
+        20px
+        25px;
+
+    border-top:
+        1px
+        solid
+        #cccccc;
+}
+
+
+.sidebar-user,
+.sidebar-logout {
+    width: 100%;
+
+    min-height: 45px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    color: #111111;
+
+    font-size: 14px;
+}
+
+
+.sidebar-user {
+    text-decoration: none;
+}
+
+
+.sidebar-logout {
+    padding: 0;
+
+    border: none;
+
+    background: transparent;
+
+    cursor: pointer;
+}
+
+
+
+/* ========================================
+   サイドバーを開いた時の
+   半透明の黒い背景
+======================================== */
+
+.sidebar-overlay {
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 999;
+
+    background-color:
+        rgba(
+            0,
+            0,
+            0,
+            0.35
+        );
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    transition:
+        opacity
+        0.3s
+        ease,
+        visibility
+        0.3s
+        ease;
+}
+
+
+.sidebar-overlay.show {
+    opacity: 1;
+
+    visibility: visible;
+}
+
+/* ========================================
+   AI回答生成中
+======================================== */
+
+.generating-message {
+    display: none;
+}
+
+
+/* JavaScriptでshowが付いた時だけ表示 */
+
+.generating-message.show {
+    display: flex;
+}
+
+
+/* 回答生成中の文字 */
+
+.generating-bubble {
+    color: #666666;
+}
+
+
+
+/* ========================================
+   サイドバー表示中の
+   スクロール防止
+======================================== */
+
+body.sidebar-open {
+    overflow: hidden;
 }
 
 
@@ -434,13 +1040,22 @@ body {
 
 
     .header-login-icon,
-    .header-user-icon {
+    .header-user-icon,
+    .header-logout-button {
         font-size: 19px;
     }
 
 
+    .chat-messages {
+        padding:
+            28px
+            14px
+            20px;
+    }
+
+
     .welcome-area {
-        margin-top: 105px;
+        margin-top: 80px;
     }
 
 
@@ -455,13 +1070,32 @@ body {
     }
 
 
+    .message-row {
+        margin-bottom: 36px;
+    }
+
+
+    .message-bubble {
+        max-width: 75%;
+
+        padding:
+            5px
+            15px;
+
+        font-size: 12px;
+    }
+
+
     .message-form {
-        width: calc(100% - 24px);
+        width:
+            calc(
+                100% - 24px
+            );
 
         height: 44px;
 
         margin:
-            auto
+            0
             12px
             12px;
     }
@@ -478,312 +1112,6 @@ body {
         font-size: 13px;
     }
 
-}
-
-/* ========================================
-   サイドバー
-======================================== */
-
-.sidebar {
-    position: fixed;
-
-    top: 0;
-    left: 0;
-
-    width: 78%;
-    max-width: 320px;
-    height: 100dvh;
-
-    z-index: 1000;
-
-    display: flex;
-    flex-direction: column;
-
-    background-color: #ffffff;
-
-    border-right: 1px solid #999999;
-
-    transform: translateX(-100%);
-
-    transition: transform 0.3s ease;
-}
-
-
-/* サイドバーが開いている状態 */
-
-.sidebar.open {
-    transform: translateX(0);
-}
-
-
-
-/* ========================================
-   サイドバー上部
-======================================== */
-
-.sidebar-header {
-    height: 95px;
-
-    flex-shrink: 0;
-
-    display: flex;
-    align-items: center;
-
-    padding: 0 20px;
-
-    gap: 22px;
-}
-
-
-.sidebar-close {
-    width: 32px;
-    height: 32px;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    padding: 0;
-
-    border: none;
-
-    background: transparent;
-
-    color: #111111;
-
-    font-size: 25px;
-
-    cursor: pointer;
-}
-
-
-.sidebar-logo {
-    font-size: 20px;
-}
-
-
-
-/* ========================================
-   サイドバーメニュー
-======================================== */
-
-.sidebar-menu-item,
-.history-title {
-    width: 100%;
-    min-height: 75px;
-
-    display: flex;
-    align-items: center;
-
-    gap: 12px;
-
-    padding: 0 20px;
-
-    color: #111111;
-
-    font-size: 16px;
-
-    text-decoration: none;
-}
-
-
-.sidebar-menu-item {
-    border-bottom: 1px solid #cccccc;
-}
-
-
-.sidebar-menu-icon {
-    width: 24px;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-
-
-/* ========================================
-   チャット履歴
-======================================== */
-
-.history-title {
-    flex-shrink: 0;
-}
-
-
-.history-area {
-    flex: 1;
-
-    min-height: 0;
-
-    overflow-y: auto;
-
-    padding:
-        20px
-        25px;
-}
-
-
-.history-empty {
-    margin: 30px 0;
-
-    line-height: 1.6;
-
-    font-size: 15px;
-}
-
-
-
-/* ========================================
-   未ログイン時
-======================================== */
-
-.guest-sidebar-content {
-    flex: 1;
-
-    display: flex;
-    flex-direction: column;
-
-    align-items: center;
-
-    padding:
-        30px
-        20px;
-}
-
-
-.guest-lock {
-    margin-top: 20px;
-
-    font-size: 32px;
-}
-
-
-.guest-message {
-    margin:
-        55px
-        0
-        35px;
-
-    width: 100%;
-
-    text-align: left;
-
-    font-size: 14px;
-
-    line-height: 1.5;
-}
-
-
-.sidebar-auth-button {
-    width: 150px;
-    height: 42px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    margin-bottom: 45px;
-
-    border-radius: 6px;
-
-    background-color: #d9d9d9;
-
-    color: #111111;
-
-    text-decoration: none;
-
-    font-size: 14px;
-}
-
-
-
-/* ========================================
-   ログイン済みユーザー部分
-======================================== */
-
-.sidebar-user-area {
-    flex-shrink: 0;
-
-    padding:
-        18px
-        20px
-        25px;
-
-    border-top: 1px solid #cccccc;
-}
-
-
-.sidebar-user,
-.sidebar-logout {
-    width: 100%;
-    min-height: 45px;
-
-    display: flex;
-    align-items: center;
-
-    gap: 10px;
-
-    color: #111111;
-
-    font-size: 14px;
-}
-
-
-.sidebar-user {
-    text-decoration: none;
-}
-
-
-.sidebar-logout {
-    padding: 0;
-
-    border: none;
-
-    background: transparent;
-
-    cursor: pointer;
-}
-
-
-
-/* ========================================
-   サイドバー背景
-======================================== */
-
-.sidebar-overlay {
-    position: fixed;
-
-    inset: 0;
-
-    z-index: 999;
-
-    background-color: rgba(0, 0, 0, 0.35);
-
-    opacity: 0;
-
-    visibility: hidden;
-
-    transition:
-        opacity 0.3s ease,
-        visibility 0.3s ease;
-}
-
-
-.sidebar-overlay.show {
-    opacity: 1;
-
-    visibility: visible;
-}
-
-
-
-/* ========================================
-   サイドバー表示中のスクロール防止
-======================================== */
-
-body.sidebar-open {
-    overflow: hidden;
 }
 
 
@@ -810,6 +1138,19 @@ body.sidebar-open {
             1px
             solid
             #555555;
+    }
+
+
+    /*
+       PC上でもサイドバーを
+       412pxのChatBoy画面の左端から出す
+    */
+
+    .sidebar {
+        left:
+            calc(
+                50% - 206px
+            );
     }
 
 }

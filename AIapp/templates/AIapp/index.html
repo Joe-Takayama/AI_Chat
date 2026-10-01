@@ -15,18 +15,110 @@ ChatBoy
 <section class="chat-top">
 
 
-    <div class="welcome-area">
+    <!-- =========================
+         会話表示
+    ========================== -->
 
-        <p class="welcome-title">
-            ChatBoyへようこそ！
-        </p>
+    <div
+        class="chat-messages"
+        id="chatMessages"
+    >
 
-        <p class="welcome-text">
-            何でも質問してください。
-        </p>
+
+        {% if messages %}
+
+
+            {% for message in messages %}
+
+
+                {% if message.role == "user" %}
+
+
+                    <!-- ユーザー -->
+
+                    <div class="message-row user-row">
+
+                        <div class="message-name">
+
+                            {% if user.is_authenticated %}
+
+                                {{ user.username }}
+
+                            {% else %}
+
+                                あなた
+
+                            {% endif %}
+
+                        </div>
+
+
+                        <div class="message-bubble user-bubble">
+
+                            {{ message.content|linebreaksbr }}
+
+                        </div>
+
+                    </div>
+
+
+                {% else %}
+
+
+                    <!-- ChatBoy -->
+
+                    <div class="message-row ai-row">
+
+                        <div class="message-name">
+
+                            ChatBoy
+
+                        </div>
+
+
+                        <div class="message-bubble ai-bubble">
+
+                            {{ message.content|linebreaksbr }}
+
+                        </div>
+
+                    </div>
+
+
+                {% endif %}
+
+
+            {% endfor %}
+
+
+        {% else %}
+
+
+            <!-- まだ会話していない -->
+
+            <div class="welcome-area">
+
+                <p class="welcome-title">
+                    ChatBoyへようこそ！
+                </p>
+
+                <p class="welcome-text">
+                    何でも質問してください。
+                </p>
+
+            </div>
+
+
+        {% endif %}
+
 
     </div>
 
+
+
+    <!-- =========================
+         メッセージ入力
+    ========================== -->
 
     <form
         method="post"
@@ -36,12 +128,7 @@ ChatBoy
         {% csrf_token %}
 
 
-        <input
-            type="text"
-            name="message"
-            class="message-input"
-            placeholder="メッセージを入力"
-        >
+        {{ form.message }}
 
 
         <button
@@ -56,6 +143,37 @@ ChatBoy
     </form>
 
 
+    <!-- 入力エラー -->
+
+    {% if form.message.errors %}
+
+        <div class="message-error">
+
+            {{ form.message.errors }}
+
+        </div>
+
+    {% endif %}
+
+
 </section>
+
+
+
+<script>
+
+    const chatMessages =
+        document.getElementById("chatMessages");
+
+
+    if (chatMessages) {
+
+        chatMessages.scrollTop =
+            chatMessages.scrollHeight;
+
+    }
+
+</script>
+
 
 {% endblock %}

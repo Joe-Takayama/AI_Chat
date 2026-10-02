@@ -1,12 +1,13 @@
-/* ==============================
+/* ========================================
    ヘッダー
-============================== */
+======================================== */
 
 .auth-header {
     width: 100%;
     height: 116px;
 
     display: grid;
+
     grid-template-columns:
         60px
         1fr
@@ -14,11 +15,16 @@
 
     align-items: center;
 
-    padding: 0 20px;
+    padding:
+        0
+        20px;
 
     background-color: #d9d9d9;
 
-    border-bottom: 1px solid #333333;
+    border-bottom:
+        1px
+        solid
+        #333333;
 }
 
 
@@ -56,9 +62,9 @@
 
 
 
-/* ==============================
-   認証画面全体
-============================== */
+/* ========================================
+   ログイン・新規登録画面
+======================================== */
 
 .auth-page {
     width: 100%;
@@ -71,9 +77,9 @@
 
 
 
-/* ==============================
+/* ========================================
    タイトル
-============================== */
+======================================== */
 
 .auth-title {
     margin:
@@ -90,9 +96,9 @@
 
 
 
-/* ==============================
+/* ========================================
    フォーム全体
-============================== */
+======================================== */
 
 .auth-form {
     width: 100%;
@@ -100,9 +106,9 @@
 
 
 
-/* ==============================
+/* ========================================
    各入力項目
-============================== */
+======================================== */
 
 .form-group {
     width: 100%;
@@ -111,8 +117,7 @@
 }
 
 
-/* 最後の入力欄だけ
-   ボタンとの距離を少し調整 */
+/* 最後の入力欄 */
 
 .form-group:last-of-type {
     margin-bottom: 45px;
@@ -120,9 +125,9 @@
 
 
 
-/* ==============================
+/* ========================================
    ラベル
-============================== */
+======================================== */
 
 .form-label {
     display: block;
@@ -136,13 +141,15 @@
 
 
 
-/* ==============================
+/* ========================================
    入力欄
-============================== */
+======================================== */
 
 .auth-input {
     width: 100%;
     height: 60px;
+
+    box-sizing: border-box;
 
     padding:
         0
@@ -165,14 +172,10 @@
 }
 
 
-/* フォーカス時 */
-
 .auth-input:focus {
     border-color: #777777;
 }
 
-
-/* placeholder */
 
 .auth-input::placeholder {
     color: #aaaaaa;
@@ -180,9 +183,9 @@
 
 
 
-/* ==============================
+/* ========================================
    ログイン・新規登録ボタン
-============================== */
+======================================== */
 
 .auth-button {
     display: block;
@@ -214,9 +217,9 @@
 
 
 
-/* ==============================
+/* ========================================
    下部リンク
-============================== */
+======================================== */
 
 .auth-links {
     margin-top: 70px;
@@ -244,9 +247,9 @@
 
 
 
-/* ==============================
+/* ========================================
    エラー表示
-============================== */
+======================================== */
 
 .form-error,
 .field-error {
@@ -275,11 +278,568 @@
 
 
 
-/* ==============================
-   小さいスマホ向け
-============================== */
+/* ========================================
+   パスワード再設定 共通
+======================================== */
+
+.password-header-user {
+    cursor: default;
+}
+
+
+/*
+   PC表示
+
+   ヘッダー 116px
+   フッター 66px
+
+   画面の残りをメイン部分として使う
+*/
+
+.password-reset-page,
+.password-reset-done-page,
+.password-confirm-page {
+    width: 100%;
+
+    min-height:
+        calc(
+            100dvh - 182px
+        );
+
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: column;
+
+    background-color: #f7f8fa;
+}
+
+
+
+/* ========================================
+   ① メールアドレス入力画面
+======================================== */
+
+.password-reset-page {
+    align-items: center;
+
+    padding:
+        68px
+        35px
+        24px;
+}
+
+
+
+/* タイトル */
+
+.password-reset-title {
+    margin:
+        0
+        0
+        52px;
+
+    font-size: 17px;
+
+    font-weight: 400;
+
+    text-align: center;
+}
+
+
+
+/* 説明 */
+
+.password-reset-description {
+    width: 100%;
+
+    margin:
+        0
+        0
+        62px;
+
+    font-size: 16px;
+
+    line-height: 1.4;
+
+    text-align: left;
+}
+
+
+
+/* フォーム */
+
+.password-reset-form {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+
+/* メールアドレス部分 */
+
+.password-reset-field {
+    width: 100%;
+
+    margin-bottom: 42px;
+}
+
+
+
+/* ラベル */
+
+.password-reset-label {
+    display: block;
+
+    margin:
+        0
+        0
+        7px
+        8px;
+
+    color: #111111;
+
+    font-size: 12px;
+
+    font-weight: 400;
+}
+
+
+
+/* メール入力欄 */
+
+.password-reset-input {
+    width: 100%;
+    height: 42px;
+
+    box-sizing: border-box;
+
+    padding:
+        0
+        12px;
+
+    border:
+        1px
+        solid
+        #cccccc;
+
+    border-radius: 6px;
+
+    background-color: #ffffff;
+
+    color: #111111;
+
+    font-size: 14px;
+
+    outline: none;
+}
+
+
+.password-reset-input::placeholder {
+    color: #aaaaaa;
+}
+
+
+.password-reset-input:focus {
+    border-color: #777777;
+}
+
+
+
+/* 再設定メール送信ボタン */
+
+.password-reset-submit {
+    width: 178px;
+    height: 38px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 0;
+
+    border: none;
+
+    border-radius: 5px;
+
+    background-color: #d9d9d9;
+
+    color: #111111;
+
+    font-size: 12px;
+
+    cursor: pointer;
+}
+
+
+.password-reset-submit:hover {
+    background-color: #cccccc;
+}
+
+
+
+/* ログインに戻る */
+
+.password-back-login {
+    margin-top: auto;
+
+    margin-bottom: 8px;
+
+    color: #111111;
+
+    text-decoration: none;
+
+    font-size: 12px;
+}
+
+
+.password-back-login:hover {
+    text-decoration: underline;
+}
+
+
+
+/* ========================================
+   ② メール送信完了画面
+======================================== */
+
+.password-reset-done-page {
+    align-items: center;
+
+    padding:
+        50px
+        35px
+        24px;
+}
+
+
+
+/* メールアイコン */
+
+.mail-icon {
+    margin:
+        0
+        0
+        48px;
+
+    color: #111111;
+
+    font-size: 34px;
+
+    line-height: 1;
+}
+
+
+
+/* メールを送信しました */
+
+.password-done-title {
+    margin:
+        0
+        0
+        47px;
+
+    font-size: 17px;
+
+    font-weight: 400;
+
+    text-align: center;
+}
+
+
+
+/* 説明 */
+
+.password-done-description {
+    width: 100%;
+
+    margin:
+        0
+        0
+        34px;
+
+    font-size: 16px;
+
+    line-height: 1.35;
+
+    text-align: left;
+}
+
+
+
+/* メールをご確認ください */
+
+.password-done-check {
+    width: 100%;
+
+    margin: 0;
+
+    font-size: 16px;
+
+    line-height: 1.4;
+
+    text-align: left;
+}
+
+
+
+/* ログインに戻る */
+
+.done-back-login {
+    margin-top: auto;
+
+    margin-bottom: 8px;
+}
+
+
+
+/* ========================================
+   ③ 新しいパスワード設定画面
+======================================== */
+
+/* この画面だけ中央ChatBoy */
+
+.password-confirm-header {
+    width: 100%;
+    height: 116px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-color: #d9d9d9;
+
+    border-bottom:
+        1px
+        solid
+        #555555;
+}
+
+
+.password-confirm-logo {
+    color: #111111;
+
+    text-decoration: none;
+
+    font-size: 20px;
+
+    font-weight: 400;
+}
+
+
+
+/* メイン */
+
+.password-confirm-page {
+    align-items: center;
+
+    padding:
+        52px
+        35px
+        24px;
+}
+
+
+
+/* タイトル */
+
+.password-confirm-title {
+    margin:
+        0
+        0
+        78px;
+
+    font-size: 18px;
+
+    font-weight: 400;
+
+    text-align: center;
+}
+
+
+
+/* フォーム */
+
+.password-confirm-form {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+}
+
+
+
+/* パスワード項目 */
+
+.password-confirm-field {
+    width: 100%;
+
+    margin-bottom: 34px;
+}
+
+
+
+/* ラベル */
+
+.password-confirm-label {
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: #111111;
+
+    font-size: 12px;
+
+    font-weight: 400;
+}
+
+
+
+/* 入力欄と目ボタン */
+
+.password-input-wrapper {
+    position: relative;
+
+    width: 100%;
+}
+
+
+
+/* パスワード入力 */
+
+.password-new-input {
+    width: 100%;
+    height: 42px;
+
+    box-sizing: border-box;
+
+    padding:
+        0
+        42px
+        0
+        12px;
+
+    border:
+        1px
+        solid
+        #cccccc;
+
+    border-radius: 6px;
+
+    background-color: #ffffff;
+
+    color: #111111;
+
+    font-size: 14px;
+
+    outline: none;
+}
+
+
+.password-new-input:focus {
+    border-color: #777777;
+}
+
+
+
+/* 目ボタン */
+
+.password-eye-button {
+    position: absolute;
+
+    top: 50%;
+    right: 7px;
+
+    transform:
+        translateY(-50%);
+
+    width: 28px;
+    height: 28px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 0;
+
+    border: none;
+
+    background-color: transparent;
+
+    color: #111111;
+
+    font-size: 15px;
+
+    cursor: pointer;
+}
+
+
+
+/* パスワード変更ボタン */
+
+.password-change-button {
+    width: 180px;
+    height: 38px;
+
+    align-self: center;
+
+    margin-top: 50px;
+
+    padding: 0;
+
+    border: none;
+
+    border-radius: 5px;
+
+    background-color: #d9d9d9;
+
+    color: #111111;
+
+    font-size: 12px;
+
+    cursor: pointer;
+}
+
+
+.password-change-button:hover {
+    background-color: #cccccc;
+}
+
+
+
+/* ========================================
+   URLが無効だった場合
+======================================== */
+
+.password-invalid-text {
+    margin:
+        0
+        0
+        40px;
+
+    font-size: 14px;
+
+    line-height: 1.5;
+
+    text-align: center;
+}
+
+
+
+/* ========================================
+   小さいスマホ
+======================================== */
 
 @media (max-width: 390px) {
+
+    /* ====================================
+       共通ヘッダー
+    ==================================== */
 
     .auth-header {
         height: 100px;
@@ -299,6 +859,11 @@
         font-size: 26px;
     }
 
+
+
+    /* ====================================
+       ログイン・新規登録
+    ==================================== */
 
     .auth-page {
         padding:
@@ -348,6 +913,165 @@
 
     .auth-links a {
         font-size: 16px;
+    }
+
+
+
+    /* ====================================
+       パスワード画面共通
+
+       ヘッダー 100px
+       フッター 62px
+    ==================================== */
+
+    .password-reset-page,
+    .password-reset-done-page,
+    .password-confirm-page {
+        min-height:
+            calc(
+                100dvh - 162px
+            );
+    }
+
+
+
+    /* ====================================
+       ① メールアドレス入力画面
+    ==================================== */
+
+    .password-reset-page {
+        padding:
+            62px
+            35px
+            22px;
+    }
+
+
+    .password-reset-title {
+        margin-bottom: 48px;
+
+        font-size: 16px;
+    }
+
+
+    .password-reset-description {
+        margin-bottom: 56px;
+
+        font-size: 15px;
+    }
+
+
+    .password-reset-field {
+        margin-bottom: 42px;
+    }
+
+
+    .password-reset-submit {
+        width: 178px;
+        height: 38px;
+    }
+
+
+    /*
+       ここは margin-top を
+       数値で上書きしない。
+
+       autoのままにして
+       一番下へ押し下げる。
+    */
+
+    .password-back-login {
+        margin-top: auto;
+
+        margin-bottom: 8px;
+    }
+
+
+
+    /* ====================================
+       ② メール送信完了画面
+    ==================================== */
+
+    .password-reset-done-page {
+        padding:
+            46px
+            35px
+            22px;
+    }
+
+
+    .mail-icon {
+        margin-bottom: 45px;
+
+        font-size: 32px;
+    }
+
+
+    .password-done-title {
+        margin-bottom: 43px;
+
+        font-size: 16px;
+    }
+
+
+    .password-done-description {
+        margin-bottom: 32px;
+
+        font-size: 15px;
+    }
+
+
+    .password-done-check {
+        font-size: 15px;
+    }
+
+
+    .done-back-login {
+        margin-top: auto;
+
+        margin-bottom: 8px;
+    }
+
+
+
+    /* ====================================
+       ③ 新しいパスワード設定
+    ==================================== */
+
+    .password-confirm-header {
+        height: 100px;
+    }
+
+
+    .password-confirm-logo {
+        font-size: 18px;
+    }
+
+
+    .password-confirm-page {
+        padding:
+            48px
+            35px
+            22px;
+    }
+
+
+    .password-confirm-title {
+        margin-bottom: 70px;
+
+        font-size: 17px;
+    }
+
+
+    .password-confirm-field {
+        margin-bottom: 32px;
+    }
+
+
+    .password-change-button {
+        width: 180px;
+
+        margin-top: 45px;
     }
 
 }

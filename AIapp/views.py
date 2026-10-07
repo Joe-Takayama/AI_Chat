@@ -1,104 +1,30 @@
-import uuid
+from django.shortcuts import (
+    render,
+    redirect,
+    get_object_or_404,
+)
 
-from django.shortcuts import render, redirect
 from django.views import View
 
 from .forms import ChatForm
 from .agent import ask_ai
+from .models import Chat, Message
 
 
 # ========================================
 # 履歴のタイトルを作る
 # ========================================
 
-def make_history_title(messages):
+def make_history_title(message):
 
-    for message in messages:
+    title = message.strip()
 
-        if message["role"] == "user":
+    # 長すぎる場合は20文字まで
+    if len(title) > 20:
 
-            title = message["content"].strip()
+        return title[:20] + "..."
 
-            # 長すぎる場合は20文字まで
-            if len(title) > 20:
-
-                return title[:20] + "..."
-
-            return title
-
-    return "新しいチャット"
-
-
-
-# ========================================
-# 現在のチャットを履歴に保存
-# ========================================
-
-def save_chat_history(request, messages):
-
-    # 未ログインなら履歴保存しない
-    if not request.user.is_authenticated:
-        return
-
-
-    # 現在のチャットID
-    chat_id = request.session.get(
-        "current_chat_id"
-    )
-
-
-    # まだIDがなければ新しく作る
-    if chat_id is None:
-
-        chat_id = str(
-            uuid.uuid4()
-        )
-
-        request.session[
-            "current_chat_id"
-        ] = chat_id
-
-
-    # 今まで保存されている履歴
-    chat_histories = request.session.get(
-        "chat_histories",
-        []
-    )
-
-
-    # 現在のチャット情報
-    chat_data = {
-        "id": chat_id,
-        "title": make_history_title(messages),
-        "messages": messages,
-        "previous_interaction_id":
-            request.session.get(
-                "previous_interaction_id"
-            ),
-    }
-
-
-    # 同じチャットIDがすでにあれば削除
-    # ↓
-    # 最新状態に置き換えるため
-    chat_histories = [
-        chat
-        for chat in chat_histories
-        if chat["id"] != chat_id
-    ]
-
-
-    # 最新チャットを一番上へ
-    chat_histories.insert(
-        0,
-        chat_data
-    )
-
-
-    # セッションに保存
-    request.session[
-        "chat_histories"
-    ] = chat_histories
+    return title
 
 
 
@@ -113,24 +39,94 @@ class IndexView(View):
         form = ChatForm()
 
 
-        # 現在表示中の会話
-        messages = request.session.get(
-            "chat_messages",
-            []
-        )
+        # ====================================
+        # ログイン済みの場合
+        # ====================================
 
-
-        # サイドバー用の履歴
         if request.user.is_authenticated:
 
-            chat_histories = request.session.get(
-                "chat_histories",
-                []
+            # --------------------------------
+            # サイドバーに表示する履歴
+            # --------------------------------
+
+            chat_histories = (
+                Chat.objects
+                .filter(
+                    user=request.user
+                )
+                .order_by(
+                    "-updated_at"
+                )
             )
+
+
+            # --------------------------------
+            # 現在開いているチャットID
+            # --------------------------------
+
+            current_chat_id = (
+                request.session.get(
+                    "current_chat_id"
+                )
+            )
+
+
+            messages = []
+
+
+            # --------------------------------
+            # 過去チャットを開いている場合
+            # --------------------------------
+
+            if current_chat_id:
+
+                chat = (
+                    Chat.objects
+                    .filter(
+                        id=current_chat_id,
+                        user=request.user
+                    )
+                    .first()
+                )
+
+
+                if chat:
+
+                    messages = list(
+
+                        chat.messages
+                        .order_by(
+                            "created_at"
+                        )
+                        .values(
+                            "role",
+                            "content"
+                        )
+                    )
+
+
+                else:
+
+                    request.session.pop(
+                        "current_chat_id",
+                        None
+                    )
+
+
+        # ====================================
+        # 未ログインの場合
+        # ====================================
 
         else:
 
             chat_histories = []
+
+            messages = (
+                request.session.get(
+                    "chat_messages",
+                    []
+                )
+            )
 
 
         context = {
@@ -147,6 +143,7 @@ class IndexView(View):
         )
 
 
+
     def post(self, request):
 
         form = ChatForm(
@@ -154,108 +151,264 @@ class IndexView(View):
         )
 
 
-        messages = request.session.get(
-            "chat_messages",
-            []
-        )
-
-
         if form.is_valid():
 
-            message = form.cleaned_data[
-                "message"
-            ]
-
-
-            # ==============================
-            # ユーザーのメッセージ
-            # ==============================
-
-            messages.append(
-                {
-                    "role": "user",
-                    "content": message,
-                }
+            message = (
+                form.cleaned_data[
+                    "message"
+                ]
             )
 
 
-            # Gemini側の前回の会話ID
-            previous_interaction_id = (
-                request.session.get(
-                    "previous_interaction_id"
+            # ====================================
+            # ログイン済みの場合
+            # ====================================
+
+            if request.user.is_authenticated:
+
+                # --------------------------------
+                # 現在のチャットID
+                # --------------------------------
+
+                current_chat_id = (
+                    request.session.get(
+                        "current_chat_id"
+                    )
                 )
-            )
 
 
-            try:
+                chat = None
 
-                ai_message, interaction_id = ask_ai(
-                    message,
-                    previous_interaction_id
+
+                # --------------------------------
+                # 既存チャットを開いている場合
+                # --------------------------------
+
+                if current_chat_id:
+
+                    chat = (
+                        Chat.objects
+                        .filter(
+                            id=current_chat_id,
+                            user=request.user
+                        )
+                        .first()
+                    )
+
+
+                # --------------------------------
+                # 新しいチャットの場合
+                # --------------------------------
+
+                if chat is None:
+
+                    chat = Chat.objects.create(
+
+                        user=request.user,
+
+                        title=make_history_title(
+                            message
+                        )
+                    )
+
+
+                    request.session[
+                        "current_chat_id"
+                    ] = chat.id
+
+
+                # ====================================
+                # ユーザーのメッセージをDBへ保存
+                # ====================================
+
+                Message.objects.create(
+                    chat=chat,
+                    role="user",
+                    content=message
                 )
 
 
-                # ==============================
-                # ChatBoyの回答
-                # ==============================
+                # ====================================
+                # Geminiの前回の会話ID
+                # ====================================
+
+                previous_interaction_id = (
+                    chat.previous_interaction_id
+                )
+
+
+                try:
+
+                    ai_message, interaction_id = (
+                        ask_ai(
+                            message,
+                            previous_interaction_id
+                        )
+                    )
+
+
+                    # ====================================
+                    # AIの回答をDBへ保存
+                    # ====================================
+
+                    Message.objects.create(
+                        chat=chat,
+                        role="assistant",
+                        content=ai_message
+                    )
+
+
+                    # ====================================
+                    # Geminiの会話IDをDBへ保存
+                    # ====================================
+
+                    chat.previous_interaction_id = (
+                        interaction_id
+                    )
+
+
+                    # updated_atも更新される
+                    chat.save()
+
+
+                except Exception as e:
+
+                    print(e)
+
+
+                    Message.objects.create(
+                        chat=chat,
+                        role="assistant",
+                        content=(
+                            "AIからの回答を"
+                            "取得できませんでした。"
+                        )
+                    )
+
+
+                    # updated_atを更新
+                    chat.save()
+
+
+                return redirect(
+                    "AIapp:index"
+                )
+
+
+            # ====================================
+            # 未ログインの場合
+            # ====================================
+
+            else:
+
+                messages = (
+                    request.session.get(
+                        "chat_messages",
+                        []
+                    )
+                )
+
+
+                # --------------------------------
+                # ユーザーのメッセージ
+                # --------------------------------
 
                 messages.append(
                     {
-                        "role": "assistant",
-                        "content": ai_message,
+                        "role": "user",
+                        "content": message,
                     }
                 )
 
 
-                # Geminiの会話IDを保存
+                previous_interaction_id = (
+                    request.session.get(
+                        "previous_interaction_id"
+                    )
+                )
+
+
+                try:
+
+                    ai_message, interaction_id = (
+                        ask_ai(
+                            message,
+                            previous_interaction_id
+                        )
+                    )
+
+
+                    # --------------------------------
+                    # AIの回答
+                    # --------------------------------
+
+                    messages.append(
+                        {
+                            "role": "assistant",
+                            "content": ai_message,
+                        }
+                    )
+
+
+                    request.session[
+                        "previous_interaction_id"
+                    ] = interaction_id
+
+
+                except Exception as e:
+
+                    print(e)
+
+
+                    messages.append(
+                        {
+                            "role": "assistant",
+                            "content": (
+                                "AIからの回答を"
+                                "取得できませんでした。"
+                            ),
+                        }
+                    )
+
+
                 request.session[
-                    "previous_interaction_id"
-                ] = interaction_id
+                    "chat_messages"
+                ] = messages
 
 
-            except Exception as e:
-
-                print(e)
-
-
-                messages.append(
-                    {
-                        "role": "assistant",
-                        "content":
-                            "AIからの回答を取得できませんでした。",
-                    }
+                return redirect(
+                    "AIapp:index"
                 )
 
 
-            # ==============================
-            # 現在の会話を保存
-            # ==============================
+        # ====================================
+        # フォームにエラーがある場合
+        # ====================================
 
-            request.session[
-                "chat_messages"
-            ] = messages
+        if request.user.is_authenticated:
 
-
-            # ==============================
-            # サイドバー履歴にも保存
-            # ==============================
-
-            save_chat_history(
-                request,
-                messages
+            chat_histories = (
+                Chat.objects
+                .filter(
+                    user=request.user
+                )
+                .order_by(
+                    "-updated_at"
+                )
             )
 
+            messages = []
 
-            return redirect(
-                "AIapp:index"
+        else:
+
+            chat_histories = []
+
+            messages = (
+                request.session.get(
+                    "chat_messages",
+                    []
+                )
             )
-
-
-        # フォームエラーの場合
-        chat_histories = request.session.get(
-            "chat_histories",
-            []
-        )
 
 
         context = {
@@ -281,41 +434,36 @@ class NewChatView(View):
 
     def get(self, request):
 
-        # 現在表示している会話
-        messages = request.session.get(
-            "chat_messages",
-            []
-        )
+        # ====================================
+        # ログイン済み
+        # ====================================
 
+        if request.user.is_authenticated:
 
-        # 現在の会話を消す前に
-        # 履歴へ保存しておく
-        if messages:
+            # DBに履歴は残っているので
+            # 現在開いているチャットIDだけ消す
 
-            save_chat_history(
-                request,
-                messages
+            request.session.pop(
+                "current_chat_id",
+                None
             )
 
 
-        # ==============================
-        # 現在のチャットだけリセット
-        # ==============================
+        # ====================================
+        # 未ログイン
+        # ====================================
 
-        request.session.pop(
-            "chat_messages",
-            None
-        )
+        else:
 
-        request.session.pop(
-            "previous_interaction_id",
-            None
-        )
+            request.session.pop(
+                "chat_messages",
+                None
+            )
 
-        request.session.pop(
-            "current_chat_id",
-            None
-        )
+            request.session.pop(
+                "previous_interaction_id",
+                None
+            )
 
 
         return redirect(
@@ -336,7 +484,10 @@ class ChatHistoryView(View):
         chat_id
     ):
 
+        # ====================================
         # 未ログインならログイン画面へ
+        # ====================================
+
         if not request.user.is_authenticated:
 
             return redirect(
@@ -344,50 +495,24 @@ class ChatHistoryView(View):
             )
 
 
-        chat_histories = request.session.get(
-            "chat_histories",
-            []
+        # ====================================
+        # 自分のチャットだけ取得
+        # ====================================
+
+        chat = get_object_or_404(
+            Chat,
+            id=chat_id,
+            user=request.user
         )
 
 
-        # 対象のチャットを探す
-        for chat in chat_histories:
+        # ====================================
+        # 開くチャットIDをセッションに保存
+        # ====================================
 
-            if chat["id"] == chat_id:
-
-                # このチャットを現在のチャットにする
-                request.session[
-                    "current_chat_id"
-                ] = chat["id"]
-
-
-                request.session[
-                    "chat_messages"
-                ] = chat["messages"]
-
-
-                previous_interaction_id = (
-                    chat.get(
-                        "previous_interaction_id"
-                    )
-                )
-
-
-                if previous_interaction_id:
-
-                    request.session[
-                        "previous_interaction_id"
-                    ] = previous_interaction_id
-
-                else:
-
-                    request.session.pop(
-                        "previous_interaction_id",
-                        None
-                    )
-
-
-                break
+        request.session[
+            "current_chat_id"
+        ] = chat.id
 
 
         return redirect(

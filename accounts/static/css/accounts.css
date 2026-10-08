@@ -1075,3 +1075,451 @@
     }
 
 }
+
+/* ========================================
+   プロフィール画面
+======================================== */
+
+
+/* ========================================
+   ヘッダー
+======================================== */
+
+.profile-header {
+    width: 100%;
+    height: 92px;
+
+    display: grid;
+
+    grid-template-columns:
+        55px
+        1fr
+        85px;
+
+    align-items: center;
+
+    padding:
+        0
+        18px;
+
+    background-color: #d9d9d9;
+
+    border-bottom:
+        1px
+        solid
+        #333333;
+}
+
+
+/* 戻る */
+
+.profile-back {
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    color: #111111;
+
+    text-decoration: none;
+
+    font-size: 26px;
+}
+
+
+/* プロフィール */
+
+.profile-header-title {
+    text-align: center;
+
+    font-size: 20px;
+
+    font-weight: 400;
+}
+
+
+/* 右側 */
+
+.profile-header-right {
+    display: flex;
+
+    justify-content: flex-end;
+    align-items: center;
+
+    gap: 10px;
+}
+
+
+.profile-header-right form {
+    margin: 0;
+}
+
+
+.profile-logout {
+    width: 30px;
+    height: 30px;
+
+    padding: 0;
+
+    border: none;
+
+    background-color: transparent;
+
+    color: #111111;
+
+    font-size: 22px;
+
+    cursor: pointer;
+}
+
+
+.profile-header-user {
+    font-size: 19px;
+}
+
+
+
+/* ========================================
+   メイン画面
+======================================== */
+
+.profile-page {
+    width: 100%;
+
+    min-height:
+        calc(
+            100dvh - 144px
+        );
+
+    padding:
+        50px
+        30px
+        27px;
+
+    background-color: #f7f8fa;
+}
+
+
+
+/* ========================================
+   大きいプロフィールアイコン
+======================================== */
+
+.profile-main-icon {
+    width: 66px;
+    height: 66px;
+
+    margin:
+        0
+        auto
+        24px;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    border:
+        6px
+        solid
+        #1e1e1e;
+
+    border-radius: 50%;
+
+    background-color: #ffffff;
+
+    font-size: 34px;
+
+    overflow: hidden;
+}
+
+
+
+/* ========================================
+   ユーザー情報
+======================================== */
+
+.profile-current-username {
+    margin:
+        0
+        0
+        14px;
+
+    text-align: center;
+
+    color: #111111;
+
+    font-size: 20px;
+}
+
+
+.profile-email {
+    margin:
+        0
+        0
+        55px;
+
+    text-align: center;
+
+    color: #111111;
+
+    font-size: 18px;
+}
+
+
+
+/* ========================================
+   フォーム
+======================================== */
+
+.profile-form {
+    width: 100%;
+}
+
+
+.profile-field {
+    width: 100%;
+
+    margin-bottom: 27px;
+}
+
+
+
+/* ========================================
+   ラベル
+======================================== */
+
+.profile-label {
+    display: block;
+
+    margin:
+        0
+        0
+        6px;
+
+    color: #111111;
+
+    font-size: 13px;
+
+    font-weight: 400;
+}
+
+
+
+/* ========================================
+   入力欄
+======================================== */
+
+.profile-input {
+    width: 100%;
+    height: 43px;
+
+    box-sizing: border-box;
+
+    padding:
+        0
+        12px;
+
+    border:
+        1px
+        solid
+        #cccccc;
+
+    border-radius: 6px;
+
+    background-color: #ffffff;
+
+    color: #111111;
+
+    font-size: 16px;
+
+    outline: none;
+}
+
+
+.profile-input::placeholder {
+    color: #aaaaaa;
+}
+
+
+.profile-input:focus {
+    border-color: #888888;
+}
+
+
+
+/* ========================================
+   パスワード
+======================================== */
+
+.profile-password-wrapper {
+    position: relative;
+
+    width: 100%;
+}
+
+
+.profile-password-wrapper .profile-input {
+    padding-right: 42px;
+}
+
+
+
+/* 目アイコン */
+
+.profile-eye-button {
+    position: absolute;
+
+    top: 50%;
+    right: 8px;
+
+    transform:
+        translateY(-50%);
+
+    width: 28px;
+    height: 28px;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    padding: 0;
+
+    border: none;
+
+    background-color: transparent;
+
+    color: #222222;
+
+    font-size: 15px;
+
+    cursor: pointer;
+}
+
+
+
+/* ========================================
+   更新ボタン
+======================================== */
+
+.profile-update-button {
+    display: block;
+
+    width: 165px;
+    height: 30px;
+
+    margin:
+        32px
+        auto
+        0;
+
+    padding: 0;
+
+    border: none;
+
+    border-radius: 6px;
+
+    background-color: #d9d9d9;
+
+    color: #111111;
+
+    font-size: 12px;
+
+    cursor: pointer;
+}
+
+
+.profile-update-button:hover {
+    background-color: #cccccc;
+}
+
+
+
+/* ========================================
+   プロフィール画面のフッター
+======================================== */
+
+.profile-page + .footer {
+    height: 52px;
+
+    font-size: 14px;
+
+    background-color: #d9d9d9;
+
+    border-top:
+        1px
+        solid
+        #555555;
+}
+
+
+
+/* ========================================
+   小さいスマホ
+======================================== */
+
+@media (max-width: 390px) {
+
+    .profile-header {
+        height: 92px;
+
+        grid-template-columns:
+            45px
+            1fr
+            72px;
+
+        padding:
+            0
+            12px;
+    }
+
+
+    .profile-header-title {
+        font-size: 19px;
+    }
+
+
+    .profile-page {
+        min-height:
+            calc(
+                100dvh - 144px
+            );
+
+        padding:
+            50px
+            28px
+            27px;
+    }
+
+
+    .profile-main-icon {
+        width: 64px;
+        height: 64px;
+
+        margin-bottom: 25px;
+    }
+
+
+    .profile-current-username {
+        font-size: 19px;
+    }
+
+
+    .profile-email {
+        margin-bottom: 54px;
+
+        font-size: 17px;
+    }
+
+
+    .profile-field {
+        margin-bottom: 27px;
+    }
+
+
+    .profile-update-button {
+        margin-top: 28px;
+    }
+
+}

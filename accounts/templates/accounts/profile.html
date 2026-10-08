@@ -8,73 +8,224 @@
 {% endblock %}
 
 
+{% block css %}
+<link
+    rel="stylesheet"
+    href="{% static 'css/accounts.css' %}"
+>
+{% endblock %}
+
+
+{% block header %}
+
+<header class="profile-header">
+
+    <!-- 戻る -->
+    <a
+        href="{% url 'AIapp:index' %}"
+        class="profile-back"
+        aria-label="戻る"
+    >
+        ←
+    </a>
+
+
+    <!-- タイトル -->
+    <div class="profile-header-title">
+        プロフィール
+    </div>
+
+
+    <!-- 右側 -->
+    <div class="profile-header-right">
+
+        <form
+            method="post"
+            action="{% url 'accounts:logout' %}"
+        >
+            {% csrf_token %}
+
+            <button
+                type="submit"
+                class="profile-logout"
+                aria-label="ログアウト"
+            >
+                ⇥
+            </button>
+        </form>
+
+
+        <span class="profile-header-user">
+            👤
+        </span>
+
+    </div>
+
+</header>
+
+{% endblock %}
+
+
 {% block content %}
 
 <section class="profile-page">
 
-    <h1>
-        プロフィール
-    </h1>
 
-
-    <div class="profile-icon">
+    <!-- プロフィールアイコン -->
+    <div class="profile-main-icon">
         👤
     </div>
 
 
-    <p>
+    <!-- 現在のユーザー名 -->
+    <p class="profile-current-username">
         {{ request.user.username }}
     </p>
 
-    <p>
+
+    <!-- メールアドレス -->
+    <p class="profile-email">
         {{ request.user.email }}
     </p>
 
 
-    <form method="post">
+    <form
+        method="post"
+        class="profile-form"
+    >
 
         {% csrf_token %}
 
 
-        <div>
-            <label>
+        <!-- ユーザー名 -->
+        <div class="profile-field">
+
+            <label class="profile-label">
                 ユーザー名
             </label>
 
             {{ form.username }}
 
-            {{ form.username.errors }}
+            {% if form.username.errors %}
+                <div class="field-error">
+                    {{ form.username.errors }}
+                </div>
+            {% endif %}
+
         </div>
 
 
-        <div>
-            <label>
+        <!-- パスワード -->
+        <div class="profile-field">
+
+            <label class="profile-label">
                 パスワード
             </label>
 
-            {{ form.password1 }}
+            <div class="profile-password-wrapper">
 
-            {{ form.password1.errors }}
+                {{ form.password1 }}
+
+                <button
+                    type="button"
+                    class="profile-eye-button"
+                    data-target="{{ form.password1.id_for_label }}"
+                >
+                    ◉
+                </button>
+
+            </div>
+
+            {% if form.password1.errors %}
+                <div class="field-error">
+                    {{ form.password1.errors }}
+                </div>
+            {% endif %}
+
         </div>
 
 
-        <div>
-            <label>
+        <!-- パスワード確認 -->
+        <div class="profile-field">
+
+            <label class="profile-label">
                 パスワード（確認）
             </label>
 
-            {{ form.password2 }}
+            <div class="profile-password-wrapper">
 
-            {{ form.password2.errors }}
+                {{ form.password2 }}
+
+                <button
+                    type="button"
+                    class="profile-eye-button"
+                    data-target="{{ form.password2.id_for_label }}"
+                >
+                    ◉
+                </button>
+
+            </div>
+
+            {% if form.password2.errors %}
+                <div class="field-error">
+                    {{ form.password2.errors }}
+                </div>
+            {% endif %}
+
         </div>
 
 
-        <button type="submit">
+        <button
+            type="submit"
+            class="profile-update-button"
+        >
             更新
         </button>
 
     </form>
 
 </section>
+
+
+<script>
+
+    const profileEyeButtons =
+        document.querySelectorAll(
+            ".profile-eye-button"
+        );
+
+
+    profileEyeButtons.forEach(
+        function (button) {
+
+            button.addEventListener(
+                "click",
+                function () {
+
+                    const input =
+                        document.getElementById(
+                            button.dataset.target
+                        );
+
+
+                    if (
+                        input.type === "password"
+                    ) {
+
+                        input.type = "text";
+
+                    } else {
+
+                        input.type = "password";
+
+                    }
+
+                }
+            );
+
+        }
+    );
+
+</script>
 
 {% endblock %}

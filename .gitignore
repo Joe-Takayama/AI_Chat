@@ -172,3 +172,9 @@ cython_debug/
 #.idea/
 
 # End of https://www.toptal.com/developers/gitignore/api/django
+
+credentials.json
+token.jsoncredentials.json
+token.json
+credentials.json
+token.json

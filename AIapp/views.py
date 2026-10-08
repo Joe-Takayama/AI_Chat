@@ -517,4 +517,4 @@ class ChatHistoryView(View):
 
         return redirect(
             "AIapp:index"
-        )
+        )   

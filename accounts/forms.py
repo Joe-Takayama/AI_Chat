@@ -187,3 +187,118 @@ class NewPasswordForm(forms.Form):
 
 
         return cleaned_data
+
+
+# ========================================
+# プロフィール更新
+# ========================================
+
+class ProfileForm(forms.Form):
+
+    username = forms.CharField(
+        label="ユーザー名",
+        max_length=150,
+        widget=forms.TextInput(
+            attrs={
+                "class": "profile-input",
+                "placeholder": "ユーザー名を入力",
+            }
+        )
+    )
+
+    password1 = forms.CharField(
+        label="パスワード",
+        required=False,
+        widget=forms.PasswordInput(
+            attrs={
+                "class": "profile-input",
+            }
+        )
+    )
+
+    password2 = forms.CharField(
+        label="パスワード（確認）",
+        required=False,
+        widget=forms.PasswordInput(
+            attrs={
+                "class": "profile-input",
+            }
+        )
+    )
+
+
+    def __init__(
+        self,
+        *args,
+        user=None,
+        **kwargs
+    ):
+
+        super().__init__(
+            *args,
+            **kwargs
+        )
+
+        self.user = user
+
+
+        if user:
+
+            self.fields[
+                "username"
+            ].initial = user.username
+
+
+    def clean_username(self):
+
+        username = self.cleaned_data[
+            "username"
+        ]
+
+        if (
+            User.objects
+            .filter(
+                username__iexact=username
+            )
+            .exclude(
+                pk=self.user.pk
+            )
+            .exists()
+        ):
+
+            raise forms.ValidationError(
+                "このユーザー名は既に使用されています。"
+            )
+
+
+        return username
+
+
+    def clean(self):
+
+        cleaned_data = super().clean()
+
+        password1 = cleaned_data.get(
+            "password1"
+        )
+
+        password2 = cleaned_data.get(
+            "password2"
+        )
+
+
+        if (
+            password1
+            or
+            password2
+        ):
+
+            if password1 != password2:
+
+                self.add_error(
+                    "password2",
+                    "パスワードが一致していません。"
+                )
+
+
+        return cleaned_data

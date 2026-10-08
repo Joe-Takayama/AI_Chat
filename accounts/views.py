@@ -1,6 +1,9 @@
 import os
 import base64
 
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 from email.message import EmailMessage
 
 from django.conf import settings
@@ -63,6 +66,7 @@ from .forms import (
     LoginForm,
     PasswordResetForm,
     NewPasswordForm,
+    ProfileForm,
 )
 
 
@@ -929,3 +933,134 @@ class PasswordResetConfirmView(View):
         ):
 
             return None
+
+
+# ========================================
+# プロフィール更新
+# ========================================
+
+class ProfileView(
+    LoginRequiredMixin,
+    View
+):
+
+    login_url = "accounts:login"
+
+
+    def get(
+        self,
+        request
+    ):
+
+        form = ProfileForm(
+            user=request.user
+        )
+
+
+        return render(
+            request,
+            "accounts/profile.html",
+            {
+                "form": form
+            }
+        )
+
+
+    def post(
+        self,
+        request
+    ):
+
+        form = ProfileForm(
+            request.POST,
+            user=request.user
+        )
+
+
+        if form.is_valid():
+
+            user = request.user
+
+
+            username = (
+                form.cleaned_data[
+                    "username"
+                ]
+            )
+
+            password = (
+                form.cleaned_data[
+                    "password1"
+                ]
+            )
+
+
+            # ==============================
+            # パスワードを変更する場合
+            # ==============================
+
+            if password:
+
+                try:
+
+                    validate_password(
+                        password,
+                        user=user
+                    )
+
+
+                except ValidationError as e:
+
+                    for error in e.messages:
+
+                        form.add_error(
+                            "password1",
+                            error
+                        )
+
+
+            # ==============================
+            # エラーがなければ更新
+            # ==============================
+
+            if not form.errors:
+
+                user.username = username
+
+
+                if password:
+
+                    user.set_password(
+                        password
+                    )
+
+
+                user.save()
+
+
+                # パスワード変更後も
+                # ログイン状態を維持
+                if password:
+
+                    update_session_auth_hash(
+                        request,
+                        user
+                    )
+
+
+                # ==========================
+                # 更新後トップ画面へ
+                # ==========================
+
+                return redirect(
+                    "AIapp:index"
+                )
+
+
+        return render(
+            request,
+            "accounts/profile.html",
+            {
+                "form": form
+            }
+        )

@@ -1,0 +1,80 @@
+{% extends "base2/base2.html" %}
+
+{% load static %}
+
+
+{% block title %}
+プロフィール | ChatBoy
+{% endblock %}
+
+
+{% block content %}
+
+<section class="profile-page">
+
+    <h1>
+        プロフィール
+    </h1>
+
+
+    <div class="profile-icon">
+        👤
+    </div>
+
+
+    <p>
+        {{ request.user.username }}
+    </p>
+
+    <p>
+        {{ request.user.email }}
+    </p>
+
+
+    <form method="post">
+
+        {% csrf_token %}
+
+
+        <div>
+            <label>
+                ユーザー名
+            </label>
+
+            {{ form.username }}
+
+            {{ form.username.errors }}
+        </div>
+
+
+        <div>
+            <label>
+                パスワード
+            </label>
+
+            {{ form.password1 }}
+
+            {{ form.password1.errors }}
+        </div>
+
+
+        <div>
+            <label>
+                パスワード（確認）
+            </label>
+
+            {{ form.password2 }}
+
+            {{ form.password2.errors }}
+        </div>
+
+
+        <button type="submit">
+            更新
+        </button>
+
+    </form>
+
+</section>
+
+{% endblock %}

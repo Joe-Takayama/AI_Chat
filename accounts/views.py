@@ -621,6 +621,17 @@ class PasswordResetDoneView(View):
 
 class PasswordResetConfirmView(View):
 
+    # ====================================
+    # セッションに保存するときの名前
+    # ====================================
+
+    SESSION_TOKEN_NAME = "password_reset_token"
+
+
+    # ====================================
+    # パスワード変更画面を表示
+    # ====================================
+
     def get(
         self,
         request,
@@ -634,49 +645,120 @@ class PasswordResetConfirmView(View):
 
 
         # ====================================
-        # URLが正しいか確認
+        # ユーザーが存在しない
+        # ====================================
+
+        if user is None:
+
+            return render(
+                request,
+                "accounts/password_reset_confirm.html",
+                {
+                    "form": None,
+                    "validlink": False,
+                }
+            )
+
+
+        # ====================================
+        # メールのURLから最初にアクセスした場合
+        # ====================================
+
+        if token != "set-password":
+
+            # トークンが正しいか確認
+            if default_token_generator.check_token(
+                user,
+                token
+            ):
+
+                # ====================================
+                # 本物のトークンをセッションに保存
+                # ====================================
+
+                request.session[
+                    self.SESSION_TOKEN_NAME
+                ] = token
+
+
+                # ====================================
+                # URLから本物のトークンを消す
+                # ====================================
+
+                return redirect(
+                    "accounts:password_reset_confirm",
+                    uidb64=uidb64,
+                    token="set-password"
+                )
+
+
+            # ====================================
+            # トークンが間違っている
+            # ====================================
+
+            return render(
+                request,
+                "accounts/password_reset_confirm.html",
+                {
+                    "form": None,
+                    "validlink": False,
+                }
+            )
+
+
+        # ====================================
+        # set-password URLに来た場合
+        # ====================================
+
+        session_token = request.session.get(
+            self.SESSION_TOKEN_NAME
+        )
+
+
+        # ====================================
+        # セッションに保存したトークンを確認
         # ====================================
 
         if (
-            user is not None
+            session_token
             and
-            default_token_generator
-            .check_token(
+            default_token_generator.check_token(
                 user,
-                token
+                session_token
             )
         ):
 
-            validlink = True
+            form = NewPasswordForm()
 
-            form = (
-                NewPasswordForm()
+
+            return render(
+                request,
+                "accounts/password_reset_confirm.html",
+                {
+                    "form": form,
+                    "validlink": True,
+                }
             )
 
 
-        else:
-
-            validlink = False
-
-            form = None
-
+        # ====================================
+        # セッションのトークンが無効
+        # ====================================
 
         return render(
             request,
-            (
-                "accounts/"
-                "password_reset_confirm.html"
-            ),
+            "accounts/password_reset_confirm.html",
             {
-                "form":
-                    form,
-
-                "validlink":
-                    validlink,
+                "form": None,
+                "validlink": False,
             }
         )
 
 
+
+    # ====================================
+    # パスワード変更
+    # ====================================
 
     def post(
         self,
@@ -691,35 +773,44 @@ class PasswordResetConfirmView(View):
 
 
         # ====================================
-        # URLが無効
+        # セッションから本物のトークン取得
+        # ====================================
+
+        session_token = request.session.get(
+            self.SESSION_TOKEN_NAME
+        )
+
+
+        # ====================================
+        # URL・ユーザー・トークンを確認
         # ====================================
 
         if (
+            token != "set-password"
+            or
             user is None
             or
-            not
-            default_token_generator
-            .check_token(
+            not session_token
+            or
+            not default_token_generator.check_token(
                 user,
-                token
+                session_token
             )
         ):
 
             return render(
                 request,
-                (
-                    "accounts/"
-                    "password_reset_confirm.html"
-                ),
+                "accounts/password_reset_confirm.html",
                 {
-                    "form":
-                        None,
-
-                    "validlink":
-                        False,
+                    "form": None,
+                    "validlink": False,
                 }
             )
 
+
+        # ====================================
+        # 入力されたパスワードを取得
+        # ====================================
 
         form = NewPasswordForm(
             request.POST
@@ -767,8 +858,17 @@ class PasswordResetConfirmView(View):
                     new_password
                 )
 
-
                 user.save()
+
+
+                # ====================================
+                # 使用済みトークンをセッションから削除
+                # ====================================
+
+                request.session.pop(
+                    self.SESSION_TOKEN_NAME,
+                    None
+                )
 
 
                 # ====================================
@@ -780,18 +880,16 @@ class PasswordResetConfirmView(View):
                 )
 
 
+        # ====================================
+        # フォーム入力エラー
+        # ====================================
+
         return render(
             request,
-            (
-                "accounts/"
-                "password_reset_confirm.html"
-            ),
+            "accounts/password_reset_confirm.html",
             {
-                "form":
-                    form,
-
-                "validlink":
-                    True,
+                "form": form,
+                "validlink": True,
             }
         )
 
